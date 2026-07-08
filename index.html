@@ -159,9 +159,30 @@ section{padding:60px 0}
 .col-hi{background:rgba(79,209,197,.16)} .col-hi2{background:rgba(255,122,89,.14)}
 .tag{display:inline-block;font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:999px;font-weight:700;margin-bottom:6px}
 .tag.g{background:#0F7A6E;color:#fff} .tag.a{background:var(--coral);color:#3a1400}
-.moneynote{font-family:var(--mono);font-size:12px;color:var(--paper-mut);margin-top:18px;letter-spacing:.02em}
+.off{font-family:var(--mono);font-size:11px;color:#0F7A6E;font-weight:700}.firstyear{display:inline-block;margin-top:22px;background:#0F7A6E;color:#fff;font-family:var(--mono);font-size:12px;letter-spacing:.03em;padding:10px 16px;border-radius:999px;font-weight:700}.moneynote{font-family:var(--mono);font-size:12px;color:var(--paper-mut);margin-top:18px;letter-spacing:.02em}
 
 /* em ótima companhia */
+.param{border-top:1px solid var(--line)}
+.paramlead{font-size:clamp(16px,2.5vw,19px);color:var(--mut);max-width:660px;margin-bottom:28px}
+.paramlead b{color:var(--fg);font-weight:600}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.cmp{grid-template-columns:1fr}}
+.cmpcard{background:var(--ink2);border:1px solid var(--line);border-radius:16px;padding:24px}
+.cmpcard.hi{border-color:var(--tl);box-shadow:0 0 30px rgba(79,209,197,.12)}
+.cmpcard .ck{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut);margin-bottom:12px}
+.cmpcard.hi .ck{color:var(--tl)}
+.cmpcard .cbig{font-family:var(--disp);font-size:clamp(30px,7vw,42px);line-height:1}
+.cmpcard .cnote{font-family:var(--mono);font-size:12px;color:var(--mut);margin:6px 0 16px}
+.cmpcard ul{list-style:none;display:grid;gap:9px}
+.cmpcard li{font-size:14px;color:var(--mut);padding-left:18px;position:relative}
+.cmpcard li::before{content:"\2014";position:absolute;left:0;color:var(--mut2)}
+.cmpcard.hi li::before{color:var(--tl)}
+.paramfoot{font-size:14.5px;color:var(--mut);max-width:680px;margin-top:22px}
+.paramfoot b{color:var(--fg);font-weight:600}
+.segbox{margin-top:24px;background:var(--ink);border:1px solid rgba(255,122,89,.4);border-left:3px solid var(--coral);border-radius:14px;padding:20px}
+.segk{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--coral);margin-bottom:8px}
+.segbox p{color:var(--mut);font-size:14.5px}
+.segbox p b{color:var(--fg);font-weight:600}
 .company{text-align:center}
 .company .sub{font-size:clamp(16px,2.8vw,20px);color:var(--mut);max-width:600px;margin:0 auto 34px}
 .company .sub b{color:var(--fg);font-weight:600}
@@ -323,6 +344,10 @@ footer{padding:28px 0;color:var(--mut2);font-family:var(--mono);font-size:11px;l
       <div class="val3"><h4><span class="i">→</span>Marca fortalecida</h4><p>Presença constante no ponto mais nobre da cidade constrói autoridade e confiança.</p></div>
       <div class="val3"><h4><span class="i">→</span>Valor agregado</h4><p>Ser visto onde a cidade passa eleva a percepção do seu negócio — e o desejo pela sua marca.</p></div>
     </div>
+    <div class="segbox">
+      <div class="segk">Exclusividade de segmento · sob consulta</div>
+      <p>Quer ser a <b>única marca da sua área</b> no painel? Nos planos de 6 e 12 meses, oferecemos exclusividade de segmento sob consulta — enquanto o seu contrato estiver ativo, nenhum concorrente direto entra no painel.</p>
+    </div>
   </div>
 </section>
 
@@ -365,26 +390,50 @@ footer{padding:28px 0;color:var(--mut2);font-family:var(--mono);font-size:11px;l
   <div class="wrap">
     <div class="eyebrow">Investimento</div>
     <h2 class="stitle">Escolha seu plano</h2>
-    <p class="intro">Quanto maior o período, menor o valor por mês. Os planos de <b>6 meses</b> são os mais escolhidos; os de <b>12 meses</b> garantem sua cota e o melhor custo por real investido.</p>
+    <p class="intro">Quanto maior o período, maior o desconto: <b>5% em 3 meses, 10% em 6 e 20% em 12 meses</b>. Os planos de 6 meses são os mais escolhidos; os de 12 garantem a cota e o melhor custo por real.</p>
     <div class="tscroll">
       <table class="ptable">
         <thead>
           <tr>
             <th style="text-align:left">Duração</th>
             <th>1 mês</th>
-            <th>3 meses</th>
-            <th class="col-hi"><span class="tag g">Mais escolhido</span><br>6 meses</th>
-            <th class="col-hi2"><span class="tag a">Garante a cota</span><br>12 meses</th>
+            <th>3 meses<br><span class="off">5% off</span></th>
+            <th class="col-hi"><span class="tag g">Mais escolhido</span><br>6 meses<br><span class="off">10% off</span></th>
+            <th class="col-hi2"><span class="tag a">Garante a cota</span><br>12 meses<br><span class="off">20% off</span></th>
           </tr>
         </thead>
         <tbody>
-          <tr><td class="dur">05 seg</td><td class="val">R$ 600</td><td class="val">R$ 585</td><td class="val col-hi">R$ 570</td><td class="val col-hi2">R$ 540</td></tr>
-          <tr><td class="dur">10 seg</td><td class="val">R$ 750</td><td class="val">R$ 730</td><td class="val col-hi">R$ 705</td><td class="val col-hi2">R$ 660</td></tr>
-          <tr><td class="dur">15 seg</td><td class="val">R$ 1.050</td><td class="val">R$ 1.010</td><td class="val col-hi">R$ 975</td><td class="val col-hi2">R$ 900</td></tr>
+          <tr><td class="dur">05 seg</td><td class="val">R$ 600</td><td class="val">R$ 570</td><td class="val col-hi">R$ 540</td><td class="val col-hi2">R$ 480</td></tr>
+          <tr><td class="dur">10 seg</td><td class="val">R$ 750</td><td class="val">R$ 710</td><td class="val col-hi">R$ 675</td><td class="val col-hi2">R$ 600</td></tr>
+          <tr><td class="dur">15 seg</td><td class="val">R$ 1.050</td><td class="val">R$ 1.000</td><td class="val col-hi">R$ 945</td><td class="val col-hi2">R$ 840</td></tr>
         </tbody>
       </table>
     </div>
+    <div class="firstyear">★ Condições e valores especiais de lançamento no primeiro ano — consulte.</div>
     <div class="moneynote">Valores por mês. Consulte inserções avulsas e produção de vídeo.</div>
+  </div>
+</section>
+
+<section class="param">
+  <div class="wrap">
+    <div class="eyebrow">Parâmetro de mercado</div>
+    <h2 class="stitle">Quanto custa ser visto na região</h2>
+    <p class="paramlead">Um preço sozinho diz pouco. Ao lado do que o mercado cobra, o valor fica claro: um <b>outdoor estático na mesma região</b> fica na faixa de R$ 1.500 a R$ 2.000 a cada 14 dias.</p>
+    <div class="cmp">
+      <div class="cmpcard">
+        <div class="ck">Outdoor tradicional</div>
+        <div class="cbig">~R$ 107 a 143<span style="font-family:var(--body);font-size:16px;color:var(--mut)"> /dia</span></div>
+        <div class="cnote">R$ 1.500 a R$ 2.000 / 14 dias</div>
+        <ul><li>Tela inteira só sua</li><li>Exposição 24h</li><li>Arte estática e impressa</li><li>Trocar a arte = nova impressão</li><li>Um ponto fixo</li></ul>
+      </div>
+      <div class="cmpcard hi">
+        <div class="ck">Painel de LED · New Mídia</div>
+        <div class="cbig">a partir de ~R$ 20<span style="font-family:var(--body);font-size:16px;color:var(--tl)"> /dia</span></div>
+        <div class="cnote">planos a partir de R$ 600/mês</div>
+        <ul><li>Vídeo em movimento</li><li>Centenas de aparições por dia</li><li>Troca de arte sem custo</li><li>Ponto premium no coração da cidade</li><li>Alcance mensurável</li></ul>
+      </div>
+    </div>
+    <p class="paramfoot">São formatos diferentes: o outdoor entrega 24h e tela cheia; o painel entrega <b>movimento, repetição e flexibilidade</b> por uma fração do custo diário. Não é sobre ser o mais barato — é <b>mais impacto por real investido</b>.</p>
   </div>
 </section>
 
@@ -392,7 +441,7 @@ footer{padding:28px 0;color:var(--mut2);font-family:var(--mono);font-size:11px;l
   <div class="wrap">
     <div class="eyebrow">Em ótima companhia</div>
     <h2 class="stitle">Sua marca ao lado das grandes</h2>
-    <p class="sub">No painel, grandes marcas nacionais estão sempre rodando. Anunciar aqui é <b>colocar seu negócio lado a lado com elas</b> — e absorver o prestígio dessa vizinhança.</p>
+    <p class="sub">No painel, grandes marcas estão sempre rodando. Anunciar aqui é <b>colocar seu negócio lado a lado com elas</b> — e absorver o prestígio dessa vizinhança.</p>
     <div class="logowall">
       <div class="lw"><!-- trocar por logo real: <img src="reserva.png" style="max-width:100%"> --><span class="wm">RESERVA</span></div>
       <div class="lw"><!-- <img src="lacoste.png" style="max-width:100%"> --><span class="wm">LACOSTE</span></div>
