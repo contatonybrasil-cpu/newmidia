@@ -9,21 +9,18 @@
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<style>
-@keyframes tally{0%,100%{opacity:1}50%{opacity:.3}}
+<style>@keyframes tally{0%,100%{opacity:1}50%{opacity:.3}}
 html,body{background:#0B0E14}
 *{-webkit-tap-highlight-color:transparent}
 body,.font-sans{font-family:'Archivo',system-ui,sans-serif !important}
 .font-mono{font-family:'Space Mono',ui-monospace,monospace !important}
 .disp{font-family:'Anton','Arial Narrow',sans-serif;font-weight:400;letter-spacing:.01em}
-.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase}
-</style>
+.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase}</style>
 </head>
 <body>
 <div id="root"></div>
 <script>window.addEventListener("error",function(ev){var r=document.getElementById("root");if(r&&!r.hasChildNodes())r.innerHTML='<pre style="color:#ff7a59;background:#0B0E14;padding:20px;white-space:pre-wrap;font-family:monospace">Erro: '+(ev.message||ev.error)+'</pre>';});</script>
 <script>
-function _jsxDEV(type,props,key){props=props||{};var children=props.children;var p={};for(var k in props){if(k!=="children")p[k]=props[k];}if(key!==undefined&&key!==null)p.key=key;return React.createElement(type,p,children);}
 const {
   useState,
   useEffect,
@@ -31,7 +28,7 @@ const {
   useMemo
 } = React;
 const T = {
-  bg: "#0B0E14",
+  ink: "#0B0E14",
   panel: "#141821",
   panel2: "#1A2029",
   line: "#28303C",
@@ -40,9 +37,9 @@ const T = {
   mut2: "#59626F",
   tl: "#4FD1C5",
   coral: "#FF7A59",
-  amber: "#F5A524",
   violet: "#A78BFA",
-  blue: "#60A5FA"
+  blue: "#60A5FA",
+  amber: "#F5A524"
 };
 const PALETA = [T.tl, T.coral, T.violet, T.blue, T.amber, "#34D399"];
 const DURACOES = [5, 10, 15];
@@ -53,6 +50,14 @@ const offset = d => {
   x.setDate(x.getDate() + d);
   return x.toISOString().slice(0, 10);
 };
+function addMeses(d, n) {
+  if (!d) return "";
+  var p = d.split("-").map(Number);
+  var dt = new Date(p[0], p[1] - 1 + n, p[2]);
+  var mm = String(dt.getMonth() + 1).padStart(2, "0");
+  var dd = String(dt.getDate()).padStart(2, "0");
+  return dt.getFullYear() + "-" + mm + "-" + dd;
+}
 const brl = n => (Number(n) || 0).toLocaleString("pt-BR", {
   style: "currency",
   currency: "BRL",
@@ -103,8 +108,6 @@ const PAGTO = {
     cor: T.coral
   }
 };
-
-// ---- ícones (SVG inline) ----
 function Ic({
   size = 24,
   fill = "none",
@@ -113,7 +116,7 @@ function Ic({
   className,
   children
 }) {
-  return /*#__PURE__*/_jsxDEV("svg", {
+  return /*#__PURE__*/React.createElement("svg", {
     width: size,
     height: size,
     viewBox: "0 0 24 24",
@@ -123,314 +126,253 @@ function Ic({
     strokeLinecap: "round",
     strokeLinejoin: "round",
     style: style,
-    className: className,
-    children: children
-  }, void 0, false);
+    className: className
+  }, children);
 }
-const LayoutDashboard = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("rect", {
-    x: "3",
-    y: "3",
-    width: "7",
-    height: "9",
-    rx: "1"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("rect", {
-    x: "14",
-    y: "3",
-    width: "7",
-    height: "5",
-    rx: "1"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("rect", {
-    x: "14",
-    y: "12",
-    width: "7",
-    height: "9",
-    rx: "1"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("rect", {
-    x: "3",
-    y: "16",
-    width: "7",
-    height: "5",
-    rx: "1"
-  }, void 0, false)]
-}, void 0, true);
-const Ticket = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("path", {
-    d: "M4 5h16a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2Z"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "7",
-    x2: "12",
-    y2: "17",
-    strokeDasharray: "2 3"
-  }, void 0, false)]
-}, void 0, true);
-const ListOrdered = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "9",
-    y1: "6",
-    x2: "21",
-    y2: "6"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "9",
-    y1: "12",
-    x2: "21",
-    y2: "12"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "9",
-    y1: "18",
-    x2: "21",
-    y2: "18"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "4",
-    y1: "6",
-    x2: "4.4",
-    y2: "6"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "4",
-    y1: "12",
-    x2: "4.4",
-    y2: "12"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "4",
-    y1: "18",
-    x2: "4.4",
-    y2: "18"
-  }, void 0, false)]
-}, void 0, true);
-const MonitorPlay = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("rect", {
-    x: "2",
-    y: "3",
-    width: "20",
-    height: "14",
-    rx: "2"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("polygon", {
-    points: "10 7 15 10 10 13",
-    fill: "currentColor",
-    stroke: "none"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "8",
-    y1: "21",
-    x2: "16",
-    y2: "21"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "17",
-    x2: "12",
-    y2: "21"
-  }, void 0, false)]
-}, void 0, true);
-const Plus = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "5",
-    x2: "12",
-    y2: "19"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "5",
-    y1: "12",
-    x2: "19",
-    y2: "12"
-  }, void 0, false)]
-}, void 0, true);
-const Pencil = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("path", {
-    d: "M12 20h9"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
-  }, void 0, false)]
-}, void 0, true);
-const Trash2 = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("path", {
-    d: "M3 6h18"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "10",
-    y1: "11",
-    x2: "10",
-    y2: "17"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "14",
-    y1: "11",
-    x2: "14",
-    y2: "17"
-  }, void 0, false)]
-}, void 0, true);
-const ArrowUp = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "19",
-    x2: "12",
-    y2: "5"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("polyline", {
-    points: "5 12 12 5 19 12"
-  }, void 0, false)]
-}, void 0, true);
-const ArrowDown = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "5",
-    x2: "12",
-    y2: "19"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("polyline", {
-    points: "19 12 12 19 5 12"
-  }, void 0, false)]
-}, void 0, true);
-const Play = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: /*#__PURE__*/_jsxDEV("polygon", {
-    points: "5 3 19 12 5 21 5 3",
-    fill: "currentColor",
-    stroke: "none"
-  }, void 0, false)
-}, void 0, false);
-const Pause = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("rect", {
-    x: "6",
-    y: "4",
-    width: "4",
-    height: "16"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("rect", {
-    x: "14",
-    y: "4",
-    width: "4",
-    height: "16"
-  }, void 0, false)]
-}, void 0, true);
-const X = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "18",
-    y1: "6",
-    x2: "6",
-    y2: "18"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "6",
-    y1: "6",
-    x2: "18",
-    y2: "18"
-  }, void 0, false)]
-}, void 0, true);
-const Clock = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("circle", {
-    cx: "12",
-    cy: "12",
-    r: "10"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("polyline", {
-    points: "12 6 12 12 16 14"
-  }, void 0, false)]
-}, void 0, true);
-const DollarSign = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "1",
-    x2: "12",
-    y2: "23"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
-  }, void 0, false)]
-}, void 0, true);
-const Radio = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("circle", {
-    cx: "12",
-    cy: "12",
-    r: "2",
-    fill: "currentColor",
-    stroke: "none"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4"
-  }, void 0, false)]
-}, void 0, true);
-const UploadCloud = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("path", {
-    d: "M16 16l-4-4-4 4"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M12 12v9"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M20.4 14.5A5 5 0 0 0 18 6h-1.3A8 8 0 1 0 4 15.3"
-  }, void 0, false)]
-}, void 0, true);
-const CheckCircle2 = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("circle", {
-    cx: "12",
-    cy: "12",
-    r: "10"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("polyline", {
-    points: "8 12 11 15 16 9"
-  }, void 0, false)]
-}, void 0, true);
-const AlertTriangle = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("path", {
-    d: "M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "9",
-    x2: "12",
-    y2: "13"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "12",
-    y1: "17",
-    x2: "12.01",
-    y2: "17"
-  }, void 0, false)]
-}, void 0, true);
-const CalendarClock = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("rect", {
-    x: "3",
-    y: "4",
-    width: "18",
-    height: "18",
-    rx: "2"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "16",
-    y1: "2",
-    x2: "16",
-    y2: "6"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "8",
-    y1: "2",
-    x2: "8",
-    y2: "6"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("line", {
-    x1: "3",
-    y1: "10",
-    x2: "21",
-    y2: "10"
-  }, void 0, false)]
-}, void 0, true);
-const Lock = p => /*#__PURE__*/_jsxDEV(Ic, {
-  ...p,
-  children: [/*#__PURE__*/_jsxDEV("rect", {
-    x: "3",
-    y: "11",
-    width: "18",
-    height: "11",
-    rx: "2"
-  }, void 0, false), /*#__PURE__*/_jsxDEV("path", {
-    d: "M7 11V7a5 5 0 0 1 10 0v4"
-  }, void 0, false)]
-}, void 0, true);
+const LayoutDashboard = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("rect", {
+  x: "3",
+  y: "3",
+  width: "7",
+  height: "9",
+  rx: "1"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "14",
+  y: "3",
+  width: "7",
+  height: "5",
+  rx: "1"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "14",
+  y: "12",
+  width: "7",
+  height: "9",
+  rx: "1"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "3",
+  y: "16",
+  width: "7",
+  height: "5",
+  rx: "1"
+}));
+const Ticket = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M4 5h16a2 2 0 0 1 2 2v3a2 2 0 0 0 0 4v3a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-3a2 2 0 0 0 0-4V7a2 2 0 0 1 2-2Z"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "7",
+  x2: "12",
+  y2: "17",
+  strokeDasharray: "2 3"
+}));
+const ListOrdered = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "6",
+  x2: "21",
+  y2: "6"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "12",
+  x2: "21",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "9",
+  y1: "18",
+  x2: "21",
+  y2: "18"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "4",
+  y1: "6",
+  x2: "4.4",
+  y2: "6"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "4",
+  y1: "12",
+  x2: "4.4",
+  y2: "12"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "4",
+  y1: "18",
+  x2: "4.4",
+  y2: "18"
+}));
+const MonitorPlay = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("rect", {
+  x: "2",
+  y: "3",
+  width: "20",
+  height: "14",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("polygon", {
+  points: "10 7 15 10 10 13",
+  fill: "currentColor",
+  stroke: "none"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "8",
+  y1: "21",
+  x2: "16",
+  y2: "21"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "17",
+  x2: "12",
+  y2: "21"
+}));
+const Plus = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "5",
+  x2: "12",
+  y2: "19"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "5",
+  y1: "12",
+  x2: "19",
+  y2: "12"
+}));
+const Pencil = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M12 20h9"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"
+}));
+const Trash2 = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M3 6h18"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "10",
+  y1: "11",
+  x2: "10",
+  y2: "17"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "14",
+  y1: "11",
+  x2: "14",
+  y2: "17"
+}));
+const ArrowUp = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "19",
+  x2: "12",
+  y2: "5"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "5 12 12 5 19 12"
+}));
+const ArrowDown = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "5",
+  x2: "12",
+  y2: "19"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "19 12 12 19 5 12"
+}));
+const Play = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("polygon", {
+  points: "5 3 19 12 5 21 5 3",
+  fill: "currentColor",
+  stroke: "none"
+}));
+const Pause = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("rect", {
+  x: "6",
+  y: "4",
+  width: "4",
+  height: "16"
+}), /*#__PURE__*/React.createElement("rect", {
+  x: "14",
+  y: "4",
+  width: "4",
+  height: "16"
+}));
+const X = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "18",
+  y1: "6",
+  x2: "6",
+  y2: "18"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "6",
+  y1: "6",
+  x2: "18",
+  y2: "18"
+}));
+const Clock = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "10"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "12 6 12 12 16 14"
+}));
+const DollarSign = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "1",
+  x2: "12",
+  y2: "23"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"
+}));
+const Radio = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "2",
+  fill: "currentColor",
+  stroke: "none"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M4.9 4.9a10 10 0 0 0 0 14.2M19.1 4.9a10 10 0 0 1 0 14.2M7.8 7.8a6 6 0 0 0 0 8.4M16.2 7.8a6 6 0 0 1 0 8.4"
+}));
+const UploadCloud = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M16 16l-4-4-4 4"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M12 12v9"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M20.4 14.5A5 5 0 0 0 18 6h-1.3A8 8 0 1 0 4 15.3"
+}));
+const CheckCircle2 = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("circle", {
+  cx: "12",
+  cy: "12",
+  r: "10"
+}), /*#__PURE__*/React.createElement("polyline", {
+  points: "8 12 11 15 16 9"
+}));
+const AlertTriangle = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "9",
+  x2: "12",
+  y2: "13"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "12",
+  y1: "17",
+  x2: "12.01",
+  y2: "17"
+}));
+const CalendarClock = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("rect", {
+  x: "3",
+  y: "4",
+  width: "18",
+  height: "18",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "16",
+  y1: "2",
+  x2: "16",
+  y2: "6"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "8",
+  y1: "2",
+  x2: "8",
+  y2: "6"
+}), /*#__PURE__*/React.createElement("line", {
+  x1: "3",
+  y1: "10",
+  x2: "21",
+  y2: "10"
+}));
+const Lock = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("rect", {
+  x: "3",
+  y: "11",
+  width: "18",
+  height: "11",
+  rx: "2"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M7 11V7a5 5 0 0 1 10 0v4"
+}));
 const SEED = [{
   id: 1,
   cliente: "Ótica Visão Clara",
@@ -511,6 +453,19 @@ function load() {
   } catch (e) {}
   return null;
 }
+const Campo = ({
+  label,
+  children
+}) => /*#__PURE__*/React.createElement("label", {
+  className: "block"
+}, /*#__PURE__*/React.createElement("span", {
+  className: "text-xs",
+  style: {
+    color: T.mut
+  }
+}, label), /*#__PURE__*/React.createElement("div", {
+  className: "mt-1"
+}, children));
 function App() {
   const saved = useMemo(load, []);
   const [ads, setAds] = useState(saved && saved.ads ? saved.ads : SEED);
@@ -595,126 +550,116 @@ function App() {
     label: "No ar",
     icon: MonitorPlay
   }];
-  return /*#__PURE__*/_jsxDEV("div", {
+  return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen w-full font-sans",
     style: {
-      background: T.bg,
+      background: T.ink,
       color: T.fg
-    },
-    children: [/*#__PURE__*/_jsxDEV("header", {
-      className: "px-5 pt-6 pb-4 border-b",
+    }
+  }, /*#__PURE__*/React.createElement("header", {
+    className: "px-5 pt-6 pb-4 border-b",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Radio, {
+    size: 18,
+    style: {
+      color: T.tl
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-mono tracking-widest",
+    style: {
+      color: T.mut
+    }
+  }, "NEW·MÍDIA · GESTÃO")), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs font-mono px-2.5 py-1 rounded-full",
+    style: {
+      background: T.panel,
+      color: disponiveis > 0 ? T.tl : T.coral,
+      border: "1px solid " + T.line
+    }
+  }, ocupadas, "/", cotasTotal, " cotas")), /*#__PURE__*/React.createElement("h1", {
+    className: "disp mt-1",
+    style: {
+      fontSize: "26px",
+      lineHeight: 1,
+      textTransform: "uppercase"
+    }
+  }, "Painel de LED · Presidente Prudente")), /*#__PURE__*/React.createElement("main", {
+    className: "px-5 pt-5",
+    style: {
+      paddingBottom: 92
+    }
+  }, tab === "painel" && /*#__PURE__*/React.createElement(Painel, {
+    receita,
+    ocupadas,
+    cotasTotal,
+    disponiveis,
+    loop,
+    loopTotal,
+    insHora,
+    pendentes,
+    vencendo,
+    aReceber,
+    conflitos,
+    setTab,
+    setCotasTotal: n => commit(ads, n)
+  }), tab === "cotas" && /*#__PURE__*/React.createElement(Cotas, {
+    ads,
+    setEditing,
+    remover,
+    toggleAtivo,
+    togglePub,
+    cyclePagto
+  }), tab === "grade" && /*#__PURE__*/React.createElement(Grade, {
+    ads,
+    loop,
+    loopTotal,
+    insHora,
+    mover
+  }), tab === "noar" && /*#__PURE__*/React.createElement(NoAr, {
+    loop,
+    loopTotal
+  })), /*#__PURE__*/React.createElement("nav", {
+    className: "fixed bottom-0 left-0 right-0 border-t flex",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, NAV.map(n => {
+    const on = tab === n.id;
+    const badge = n.id === "cotas" && pendentes.length > 0;
+    const Icn = n.icon;
+    return /*#__PURE__*/React.createElement("button", {
+      key: n.id,
+      onClick: () => setTab(n.id),
+      className: "relative flex-1 flex flex-col items-center gap-1 py-3",
       style: {
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center justify-between",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center gap-2",
-          children: [/*#__PURE__*/_jsxDEV(Radio, {
-            size: 18,
-            style: {
-              color: T.tl
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "text-xs font-mono tracking-widest",
-            style: {
-              color: T.mut
-            },
-            children: "NEW·MÍDIA · GESTÃO"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-xs font-mono px-2.5 py-1 rounded-full",
-          style: {
-            background: T.panel,
-            color: disponiveis > 0 ? T.tl : T.coral,
-            border: "1px solid " + T.line
-          },
-          children: [ocupadas, "/", cotasTotal, " cotas"]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("h1", {
-        className: "disp mt-1",
-        style: {
-          fontSize: "26px",
-          lineHeight: 1,
-          textTransform: "uppercase"
-        },
-        children: "Painel de LED · Presidente Prudente"
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("main", {
-      className: "px-5 pt-5",
+        color: on ? T.tl : T.mut
+      }
+    }, /*#__PURE__*/React.createElement(Icn, {
+      size: 20
+    }), badge && /*#__PURE__*/React.createElement("span", {
+      className: "absolute top-2",
       style: {
-        paddingBottom: 92
-      },
-      children: [tab === "painel" && /*#__PURE__*/_jsxDEV(Painel, {
-        receita,
-        ocupadas,
-        cotasTotal,
-        disponiveis,
-        loop,
-        loopTotal,
-        insHora,
-        pendentes,
-        vencendo,
-        aReceber,
-        conflitos,
-        setTab,
-        setCotasTotal: n => commit(ads, n)
-      }, void 0, false), tab === "cotas" && /*#__PURE__*/_jsxDEV(Cotas, {
-        ads,
-        setEditing,
-        remover,
-        toggleAtivo,
-        togglePub,
-        cyclePagto
-      }, void 0, false), tab === "grade" && /*#__PURE__*/_jsxDEV(Grade, {
-        ads,
-        loop,
-        loopTotal,
-        insHora,
-        mover
-      }, void 0, false), tab === "noar" && /*#__PURE__*/_jsxDEV(NoAr, {
-        loop,
-        loopTotal
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("nav", {
-      className: "fixed bottom-0 left-0 right-0 border-t flex",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: NAV.map(n => {
-        const on = tab === n.id;
-        const badge = n.id === "cotas" && pendentes.length > 0;
-        const Icn = n.icon;
-        return /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => setTab(n.id),
-          className: "relative flex-1 flex flex-col items-center gap-1 py-3",
-          style: {
-            color: on ? T.tl : T.mut
-          },
-          children: [/*#__PURE__*/_jsxDEV(Icn, {
-            size: 20
-          }, void 0, false), badge && /*#__PURE__*/_jsxDEV("span", {
-            className: "absolute top-2",
-            style: {
-              right: "calc(50% - 18px)",
-              width: 8,
-              height: 8,
-              borderRadius: "50%",
-              background: T.coral
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "text-[11px]",
-            children: n.label
-          }, void 0, false)]
-        }, n.id, true);
-      })
-    }, void 0, false), editing && /*#__PURE__*/_jsxDEV(Editor, {
-      inicial: editing,
-      onSalvar: salvar,
-      onFechar: () => setEditing(null)
-    }, void 0, false)]
-  }, void 0, true);
+        right: "calc(50% - 18px)",
+        width: 8,
+        height: 8,
+        borderRadius: "50%",
+        background: T.coral
+      }
+    }), /*#__PURE__*/React.createElement("span", {
+      className: "text-[11px]"
+    }, n.label));
+  })), editing && /*#__PURE__*/React.createElement(Editor, {
+    inicial: editing,
+    onSalvar: salvar,
+    onFechar: () => setEditing(null)
+  }));
 }
 function Painel({
   receita,
@@ -731,353 +676,273 @@ function Painel({
   setTab,
   setCotasTotal
 }) {
-  const Card = ({
-    icon: Icn,
-    cor,
-    valor,
-    label
-  }) => /*#__PURE__*/_jsxDEV("div", {
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-4"
+  }, pendentes.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border",
+    style: {
+      background: "rgba(255,122,89,.08)",
+      borderColor: "rgba(255,122,89,.4)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(UploadCloud, {
+    size: 18,
+    style: {
+      color: T.coral
+    }
+  }), /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold",
+    style: {
+      color: T.coral
+    }
+  }, pendentes.length, " anúncio(s) a publicar no ViPlex")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-1 mb-2",
+    style: {
+      color: T.mut
+    }
+  }, "Suba o vídeo no ViPlex Handy, publique no painel e marque como publicado na aba Cotas."), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-1"
+  }, pendentes.map(a => /*#__PURE__*/React.createElement("div", {
+    key: a.id,
+    className: "flex items-center gap-2 text-sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-1.5 h-1.5 rounded-full",
+    style: {
+      background: a.cor
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "truncate"
+  }, a.cliente), /*#__PURE__*/React.createElement("span", {
+    className: "font-mono text-xs ml-auto",
+    style: {
+      color: T.mut
+    }
+  }, a.duracao, "s")))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTab("cotas"),
+    className: "mt-3 text-xs font-medium rounded-lg px-3 py-2 w-full",
+    style: {
+      background: T.coral,
+      color: "#2a0f06"
+    }
+  }, "Ir para Cotas")), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl border p-4",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow",
+    style: {
+      color: T.mut
+    }
+  }, "Receita mensal vigente"), /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "44px",
+      lineHeight: .9,
+      marginTop: "6px"
+    }
+  }, brl(receita))), /*#__PURE__*/React.createElement("div", {
+    className: "flex rounded-2xl border overflow-hidden",
+    style: {
+      borderColor: T.line,
+      background: T.panel
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "26px",
+      lineHeight: .9,
+      color: disponiveis > 0 ? T.tl : T.coral
+    }
+  }, ocupadas + "/" + cotasTotal), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".1em"
+    }
+  }, "Cotas")), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4 border-l",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "26px",
+      lineHeight: .9
+    }
+  }, loop.length), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".1em"
+    }
+  }, "No ar")), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4 border-l",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "26px",
+      lineHeight: .9,
+      color: T.blue
+    }
+  }, tc(loopTotal)), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".1em"
+    }
+  }, "Loop"))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border flex items-center justify-between",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "text-sm font-medium"
+  }, "Total de cotas do painel"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xs",
+    style: {
+      color: T.mut
+    }
+  }, "Menos cotas = mais aparições por marca")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setCotasTotal(Math.max(ocupadas, cotasTotal - 1)),
+    className: "w-8 h-8 rounded-lg text-lg",
+    style: {
+      background: T.panel2
+    }
+  }, "–"), /*#__PURE__*/React.createElement("span", {
+    className: "font-mono text-lg w-6 text-center"
+  }, cotasTotal), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setCotasTotal(cotasTotal + 1),
+    className: "w-8 h-8 rounded-lg text-lg",
+    style: {
+      background: T.panel2
+    }
+  }, "+"))), conflitos.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border",
+    style: {
+      background: T.panel,
+      borderColor: "rgba(245,165,36,.4)"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 mb-1"
+  }, /*#__PURE__*/React.createElement(AlertTriangle, {
+    size: 16,
+    style: {
+      color: T.amber
+    }
+  }), /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold"
+  }, "Exclusividade em conflito")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs",
+    style: {
+      color: T.mut
+    }
+  }, "Você prometeu exclusividade e há mais de uma marca ativa em: ", /*#__PURE__*/React.createElement("b", {
+    style: {
+      color: T.fg
+    }
+  }, conflitos.join(", ")), ". Revise antes que o cliente perceba.")), /*#__PURE__*/React.createElement("div", {
     className: "rounded-2xl p-4 border",
     style: {
       background: T.panel,
       borderColor: T.line
-    },
-    children: [/*#__PURE__*/_jsxDEV(Icn, {
-      size: 18,
-      style: {
-        color: cor
-      }
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "text-2xl font-semibold mt-2 font-mono",
-      children: valor
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "text-xs mt-0.5",
-      style: {
-        color: T.mut
-      },
-      children: label
-    }, void 0, false)]
-  }, void 0, true);
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "flex flex-col gap-4",
-    children: [pendentes.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border",
-      style: {
-        background: "rgba(255,122,89,.08)",
-        borderColor: "rgba(255,122,89,.4)"
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-2",
-        children: [/*#__PURE__*/_jsxDEV(UploadCloud, {
-          size: 18,
-          style: {
-            color: T.coral
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: "text-sm font-semibold",
-          style: {
-            color: T.coral
-          },
-          children: [pendentes.length, " anúncio(s) a publicar no ViPlex"]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-        className: "text-xs mt-1 mb-2",
-        style: {
-          color: T.mut
-        },
-        children: "Suba o vídeo no ViPlex Handy, publique no painel e marque como publicado na aba Cotas."
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex flex-col gap-1",
-        children: pendentes.map(a => /*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center gap-2 text-sm",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "w-1.5 h-1.5 rounded-full",
-            style: {
-              background: a.cor
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "truncate",
-            children: a.cliente
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "font-mono text-xs ml-auto",
-            style: {
-              color: T.mut
-            },
-            children: [a.duracao, "s"]
-          }, void 0, true)]
-        }, a.id, true))
-      }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-        onClick: () => setTab("cotas"),
-        className: "mt-3 text-xs font-medium rounded-lg px-3 py-2 w-full",
-        style: {
-          background: T.coral,
-          color: "#2a0f06"
-        },
-        children: "Ir para Cotas"
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl border p-4",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "eyebrow",
-        style: {
-          color: T.mut
-        },
-        children: "Receita mensal vigente"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "disp",
-        style: {
-          fontSize: "44px",
-          lineHeight: .9,
-          marginTop: "6px"
-        },
-        children: brl(receita)
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "flex rounded-2xl border overflow-hidden",
-      style: {
-        borderColor: T.line,
-        background: T.panel
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex-1 p-4",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "disp",
-          style: {
-            fontSize: "26px",
-            lineHeight: .9,
-            color: disponiveis > 0 ? T.tl : T.coral
-          },
-          children: ocupadas + "/" + cotasTotal
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "eyebrow mt-2",
-          style: {
-            color: T.mut,
-            fontSize: "9px",
-            letterSpacing: ".1em"
-          },
-          children: "Cotas"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex-1 p-4 border-l",
-        style: {
-          borderColor: T.line
-        },
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "disp",
-          style: {
-            fontSize: "26px",
-            lineHeight: .9
-          },
-          children: loop.length
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "eyebrow mt-2",
-          style: {
-            color: T.mut,
-            fontSize: "9px",
-            letterSpacing: ".1em"
-          },
-          children: "No ar"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex-1 p-4 border-l",
-        style: {
-          borderColor: T.line
-        },
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "disp",
-          style: {
-            fontSize: "26px",
-            lineHeight: .9,
-            color: T.blue
-          },
-          children: tc(loopTotal)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "eyebrow mt-2",
-          style: {
-            color: T.mut,
-            fontSize: "9px",
-            letterSpacing: ".1em"
-          },
-          children: "Loop"
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border flex items-center justify-between",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "text-sm font-medium",
-          children: "Total de cotas do painel"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-xs",
-          style: {
-            color: T.mut
-          },
-          children: "Menos cotas = mais aparições por marca"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-3",
-        children: [/*#__PURE__*/_jsxDEV("button", {
-          onClick: () => setCotasTotal(Math.max(ocupadas, cotasTotal - 1)),
-          className: "w-8 h-8 rounded-lg text-lg",
-          style: {
-            background: T.panel2
-          },
-          children: "–"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "font-mono text-lg w-6 text-center",
-          children: cotasTotal
-        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => setCotasTotal(cotasTotal + 1),
-          className: "w-8 h-8 rounded-lg text-lg",
-          style: {
-            background: T.panel2
-          },
-          children: "+"
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true), conflitos.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border",
-      style: {
-        background: T.panel,
-        borderColor: "rgba(245,165,36,.4)"
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-2 mb-1",
-        children: [/*#__PURE__*/_jsxDEV(AlertTriangle, {
-          size: 16,
-          style: {
-            color: T.amber
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: "text-sm font-semibold",
-          children: "Exclusividade em conflito"
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-        className: "text-xs",
-        style: {
-          color: T.mut
-        },
-        children: ["Você prometeu exclusividade e há mais de uma marca ativa em: ", /*#__PURE__*/_jsxDEV("b", {
-          style: {
-            color: T.fg
-          },
-          children: conflitos.join(", ")
-        }, void 0, false), ". Revise antes que o cliente perceba."]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-2 mb-3",
-        children: [/*#__PURE__*/_jsxDEV(CalendarClock, {
-          size: 16,
-          style: {
-            color: T.coral
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: "text-sm font-semibold",
-          children: "Vencendo em 30 dias"
-        }, void 0, false)]
-      }, void 0, true), vencendo.length === 0 ? /*#__PURE__*/_jsxDEV("p", {
-        className: "text-sm",
-        style: {
-          color: T.mut
-        },
-        children: "Nenhum contrato perto de vencer."
-      }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-        className: "flex flex-col gap-2",
-        children: vencendo.map(a => /*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center justify-between",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "flex items-center gap-2 min-w-0",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "w-2 h-2 rounded-full shrink-0",
-              style: {
-                background: a.cor
-              }
-            }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-              className: "text-sm truncate",
-              children: a.cliente
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-            className: "text-xs font-mono shrink-0 ml-2",
-            style: {
-              color: diasAte(a.fim) <= 7 ? T.coral : T.mut
-            },
-            children: [diasAte(a.fim), "d · ", dataBR(a.fim)]
-          }, void 0, true)]
-        }, a.id, true))
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-2 mb-3",
-        children: [/*#__PURE__*/_jsxDEV(DollarSign, {
-          size: 16,
-          style: {
-            color: T.coral
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("h2", {
-          className: "text-sm font-semibold",
-          children: "Pagamentos a receber"
-        }, void 0, false)]
-      }, void 0, true), aReceber.length === 0 ? /*#__PURE__*/_jsxDEV("p", {
-        className: "text-sm",
-        style: {
-          color: T.mut
-        },
-        children: "Tudo em dia."
-      }, void 0, false) : /*#__PURE__*/_jsxDEV("div", {
-        className: "flex flex-col gap-2",
-        children: aReceber.map(a => /*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center justify-between",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "flex items-center gap-2 min-w-0",
-            children: [/*#__PURE__*/_jsxDEV("span", {
-              className: "w-2 h-2 rounded-full shrink-0",
-              style: {
-                background: PAGTO[a.pagamento].cor
-              }
-            }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-              className: "text-sm truncate",
-              children: a.cliente
-            }, void 0, false)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-            className: "text-xs font-mono shrink-0 ml-2",
-            style: {
-              color: PAGTO[a.pagamento].cor
-            },
-            children: [PAGTO[a.pagamento].label, " · ", brl(a.valor)]
-          }, void 0, true)]
-        }, a.id, true))
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-      onClick: () => setTab("noar"),
-      className: "rounded-2xl py-3.5 font-medium flex items-center justify-center gap-2",
-      style: {
-        background: T.tl,
-        color: "#04211E"
-      },
-      children: [/*#__PURE__*/_jsxDEV(Play, {
-        size: 18
-      }, void 0, false), " Ver o painel no ar"]
-    }, void 0, true)]
-  }, void 0, true);
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 mb-3"
+  }, /*#__PURE__*/React.createElement(CalendarClock, {
+    size: 16,
+    style: {
+      color: T.coral
+    }
+  }), /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold"
+  }, "Vencendo em 30 dias")), vencendo.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: T.mut
+    }
+  }, "Nenhum contrato perto de vencer.") : /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-2"
+  }, vencendo.map(a => /*#__PURE__*/React.createElement("div", {
+    key: a.id,
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 min-w-0"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-2 h-2 rounded-full shrink-0",
+    style: {
+      background: a.cor
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm truncate"
+  }, a.cliente)), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-mono shrink-0 ml-2",
+    style: {
+      color: diasAte(a.fim) <= 7 ? T.coral : T.mut
+    }
+  }, diasAte(a.fim), "d · ", dataBR(a.fim)))))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 mb-3"
+  }, /*#__PURE__*/React.createElement(DollarSign, {
+    size: 16,
+    style: {
+      color: T.coral
+    }
+  }), /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold"
+  }, "Pagamentos a receber")), aReceber.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: T.mut
+    }
+  }, "Tudo em dia.") : /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-2"
+  }, aReceber.map(a => /*#__PURE__*/React.createElement("div", {
+    key: a.id,
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 min-w-0"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-2 h-2 rounded-full shrink-0",
+    style: {
+      background: PAGTO[a.pagamento].cor
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm truncate"
+  }, a.cliente)), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-mono shrink-0 ml-2",
+    style: {
+      color: PAGTO[a.pagamento].cor
+    }
+  }, PAGTO[a.pagamento].label, " · ", brl(a.valor)))))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setTab("noar"),
+    className: "rounded-2xl py-3.5 font-medium flex items-center justify-center gap-2",
+    style: {
+      background: T.tl,
+      color: "#04211E"
+    }
+  }, /*#__PURE__*/React.createElement(Play, {
+    size: 18
+  }), " Ver o painel no ar"));
 }
 function Cotas({
   ads,
@@ -1087,183 +952,164 @@ function Cotas({
   togglePub,
   cyclePagto
 }) {
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "flex flex-col gap-3",
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "flex items-center justify-between",
-      children: [/*#__PURE__*/_jsxDEV("h2", {
-        className: "text-sm font-semibold",
-        style: {
-          color: T.mut
-        },
-        children: [ads.length, " cota(s)"]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-        onClick: () => setEditing({}),
-        className: "flex items-center gap-1.5 text-sm font-medium rounded-full px-3 py-1.5",
-        style: {
-          background: T.tl,
-          color: "#04211E"
-        },
-        children: [/*#__PURE__*/_jsxDEV(Plus, {
-          size: 16
-        }, void 0, false), " Nova cota"]
-      }, void 0, true)]
-    }, void 0, true), ads.length === 0 && /*#__PURE__*/_jsxDEV("p", {
-      className: "text-sm py-8 text-center",
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold",
+    style: {
+      color: T.mut
+    }
+  }, ads.length, " cota(s)"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setEditing({}),
+    className: "flex items-center gap-1.5 text-sm font-medium rounded-full px-3 py-1.5",
+    style: {
+      background: T.tl,
+      color: "#04211E"
+    }
+  }, /*#__PURE__*/React.createElement(Plus, {
+    size: 16
+  }), " Nova cota")), ads.length === 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm py-8 text-center",
+    style: {
+      color: T.mut
+    }
+  }, "Nenhuma cota ainda. Toque em “Nova cota” para começar."), ads.map(a => {
+    const s = statusDe(a);
+    const pendente = s.k === "no_ar" && !a.publicado;
+    return /*#__PURE__*/React.createElement("div", {
+      key: a.id,
+      className: "rounded-2xl p-4 border",
+      style: {
+        background: T.panel,
+        borderColor: pendente ? "rgba(255,122,89,.4)" : T.line
+      }
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-start gap-3"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "w-1.5 self-stretch rounded-full shrink-0",
+      style: {
+        background: a.cor
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 flex-wrap"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono px-1.5 py-0.5 rounded",
+      style: {
+        background: T.panel2,
+        color: s.cor
+      }
+    }, s.label), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono",
       style: {
         color: T.mut
-      },
-      children: "Nenhuma cota ainda. Toque em “Nova cota” para começar."
-    }, void 0, false), ads.map(a => {
-      const s = statusDe(a);
-      const pendente = s.k === "no_ar" && !a.publicado;
-      return /*#__PURE__*/_jsxDEV("div", {
-        className: "rounded-2xl p-4 border",
-        style: {
-          background: T.panel,
-          borderColor: pendente ? "rgba(255,122,89,.4)" : T.line
-        },
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-start gap-3",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "w-1.5 self-stretch rounded-full shrink-0",
-            style: {
-              background: a.cor
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "flex-1 min-w-0",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "flex items-center gap-2 flex-wrap",
-              children: [/*#__PURE__*/_jsxDEV("span", {
-                className: "text-xs font-mono px-1.5 py-0.5 rounded",
-                style: {
-                  background: T.panel2,
-                  color: s.cor
-                },
-                children: s.label
-              }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-                className: "text-xs font-mono",
-                style: {
-                  color: T.mut
-                },
-                children: [a.duracao, "s"]
-              }, void 0, true), a.exclusivo && /*#__PURE__*/_jsxDEV("span", {
-                className: "text-xs font-mono px-1.5 py-0.5 rounded flex items-center gap-1",
-                style: {
-                  background: T.panel2,
-                  color: T.violet
-                },
-                children: [/*#__PURE__*/_jsxDEV(Lock, {
-                  size: 10
-                }, void 0, false), " exclusivo"]
-              }, void 0, true), pendente ? /*#__PURE__*/_jsxDEV("span", {
-                className: "text-xs font-mono px-1.5 py-0.5 rounded",
-                style: {
-                  background: "rgba(255,122,89,.15)",
-                  color: T.coral
-                },
-                children: "pendente no painel"
-              }, void 0, false) : s.k === "no_ar" && /*#__PURE__*/_jsxDEV("span", {
-                className: "text-xs font-mono px-1.5 py-0.5 rounded flex items-center gap-1",
-                style: {
-                  background: T.panel2,
-                  color: T.tl
-                },
-                children: [/*#__PURE__*/_jsxDEV(CheckCircle2, {
-                  size: 10
-                }, void 0, false), " publicado"]
-              }, void 0, true)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("h3", {
-              className: "font-medium mt-1 truncate",
-              children: a.titulo
-            }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-sm truncate",
-              style: {
-                color: T.mut
-              },
-              children: [a.cliente, " · ", a.segmento]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-xs mt-1 font-mono",
-              style: {
-                color: T.mut
-              },
-              children: [dataBR(a.inicio), " → ", dataBR(a.fim)]
-            }, void 0, true), /*#__PURE__*/_jsxDEV("p", {
-              className: "text-xs mt-0.5 font-mono",
-              style: {
-                color: T.mut
-              },
-              children: [brl(a.valor), " · ", a.cobranca === "avista" ? "à vista" : "mensal" + (a.diaVenc ? " (venc. dia " + a.diaVenc + ")" : ""), " · ", a.forma]
-            }, void 0, true)]
-          }, void 0, true)]
-        }, void 0, true), pendente && /*#__PURE__*/_jsxDEV("div", {
-          className: "mt-3 rounded-lg px-3 py-2 text-xs flex items-center gap-2",
-          style: {
-            background: "rgba(255,122,89,.08)",
-            color: T.coral
-          },
-          children: [/*#__PURE__*/_jsxDEV(UploadCloud, {
-            size: 14
-          }, void 0, false), " Publique o vídeo (", a.duracao, "s) no ViPlex Handy e marque como publicado."]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "flex items-center gap-2 mt-3 pt-3 border-t flex-wrap",
-          style: {
-            borderColor: T.line
-          },
-          children: [/*#__PURE__*/_jsxDEV("button", {
-            onClick: () => cyclePagto(a.id),
-            className: "text-xs px-3 py-1.5 rounded-lg",
-            style: {
-              background: T.panel2,
-              color: PAGTO[a.pagamento].cor
-            },
-            children: ["Pagto: ", PAGTO[a.pagamento].label]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            onClick: () => togglePub(a.id),
-            className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5",
-            style: {
-              background: a.publicado ? T.panel2 : T.coral,
-              color: a.publicado ? T.mut : "#2a0f06"
-            },
-            children: a.publicado ? "Marcar não publicado" : /*#__PURE__*/_jsxDEV("span", {
-              className: "flex items-center gap-1.5",
-              children: [/*#__PURE__*/_jsxDEV(CheckCircle2, {
-                size: 13
-              }, void 0, false), " Publiquei no ViPlex"]
-            }, void 0, true)
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            onClick: () => toggleAtivo(a.id),
-            className: "text-xs px-3 py-1.5 rounded-lg",
-            style: {
-              background: T.panel2,
-              color: a.ativo ? T.tl : T.mut
-            },
-            children: a.ativo ? "Pausar" : "Ativar"
-          }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-            onClick: () => setEditing(a),
-            className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5",
-            style: {
-              background: T.panel2,
-              color: T.fg
-            },
-            children: [/*#__PURE__*/_jsxDEV(Pencil, {
-              size: 13
-            }, void 0, false), " Editar"]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-            onClick: () => remover(a.id),
-            className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ml-auto",
-            style: {
-              background: T.panel2,
-              color: T.coral
-            },
-            children: /*#__PURE__*/_jsxDEV(Trash2, {
-              size: 13
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true)]
-      }, a.id, true);
-    })]
-  }, void 0, true);
+      }
+    }, a.duracao, "s"), a.exclusivo && /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono px-1.5 py-0.5 rounded flex items-center gap-1",
+      style: {
+        background: T.panel2,
+        color: T.violet
+      }
+    }, /*#__PURE__*/React.createElement(Lock, {
+      size: 10
+    }), " exclusivo"), pendente ? /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono px-1.5 py-0.5 rounded",
+      style: {
+        background: "rgba(255,122,89,.15)",
+        color: T.coral
+      }
+    }, "pendente no painel") : s.k === "no_ar" && /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono px-1.5 py-0.5 rounded flex items-center gap-1",
+      style: {
+        background: T.panel2,
+        color: T.tl
+      }
+    }, /*#__PURE__*/React.createElement(CheckCircle2, {
+      size: 10
+    }), " publicado"), /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono px-1.5 py-0.5 rounded",
+      style: {
+        background: T.panel2,
+        color: PAGTO[a.pagamento].cor
+      }
+    }, PAGTO[a.pagamento].label)), /*#__PURE__*/React.createElement("h3", {
+      className: "font-medium mt-1 truncate"
+    }, a.titulo), /*#__PURE__*/React.createElement("p", {
+      className: "text-sm truncate",
+      style: {
+        color: T.mut
+      }
+    }, a.cliente, " · ", a.segmento), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs mt-1 font-mono",
+      style: {
+        color: T.mut
+      }
+    }, dataBR(a.inicio), " → ", dataBR(a.fim)), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs mt-0.5 font-mono",
+      style: {
+        color: T.mut
+      }
+    }, brl(a.valor), " · ", a.cobranca === "avista" ? "à vista" : "mensal" + (a.diaVenc ? " (venc. dia " + a.diaVenc + ")" : ""), " · ", a.forma))), pendente && /*#__PURE__*/React.createElement("div", {
+      className: "mt-3 rounded-lg px-3 py-2 text-xs flex items-center gap-2",
+      style: {
+        background: "rgba(255,122,89,.08)",
+        color: T.coral
+      }
+    }, /*#__PURE__*/React.createElement(UploadCloud, {
+      size: 14
+    }), " Publique o vídeo (", a.duracao, "s) no ViPlex Handy e marque como publicado."), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-2 mt-3 pt-3 border-t flex-wrap",
+      style: {
+        borderColor: T.line
+      }
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => cyclePagto(a.id),
+      className: "text-xs px-3 py-1.5 rounded-lg",
+      style: {
+        background: T.panel2,
+        color: PAGTO[a.pagamento].cor
+      }
+    }, "Pagto: ", PAGTO[a.pagamento].label), /*#__PURE__*/React.createElement("button", {
+      onClick: () => togglePub(a.id),
+      className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5",
+      style: {
+        background: a.publicado ? T.panel2 : T.coral,
+        color: a.publicado ? T.mut : "#2a0f06"
+      }
+    }, a.publicado ? "Marcar não publicado" : /*#__PURE__*/React.createElement("span", {
+      className: "flex items-center gap-1.5"
+    }, /*#__PURE__*/React.createElement(CheckCircle2, {
+      size: 13
+    }), " Publiquei no ViPlex")), /*#__PURE__*/React.createElement("button", {
+      onClick: () => toggleAtivo(a.id),
+      className: "text-xs px-3 py-1.5 rounded-lg",
+      style: {
+        background: T.panel2,
+        color: a.ativo ? T.tl : T.mut
+      }
+    }, a.ativo ? "Pausar" : "Ativar"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => setEditing(a),
+      className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5",
+      style: {
+        background: T.panel2,
+        color: T.fg
+      }
+    }, /*#__PURE__*/React.createElement(Pencil, {
+      size: 13
+    }), " Editar"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => remover(a.id),
+      className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ml-auto",
+      style: {
+        background: T.panel2,
+        color: T.coral
+      }
+    }, /*#__PURE__*/React.createElement(Trash2, {
+      size: 13
+    }))));
+  }));
 }
 function Grade({
   ads,
@@ -1272,132 +1118,112 @@ function Grade({
   insHora,
   mover
 }) {
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "flex flex-col gap-4",
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border flex items-center justify-between",
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border flex items-center justify-between",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs",
+    style: {
+      color: T.mut
+    }
+  }, "Loop completo"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xl font-semibold font-mono mt-0.5"
+  }, tc(loopTotal))), /*#__PURE__*/React.createElement("div", {
+    className: "text-right"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs",
+    style: {
+      color: T.mut
+    }
+  }, "Cada marca toca"), /*#__PURE__*/React.createElement("div", {
+    className: "text-xl font-semibold font-mono mt-0.5"
+  }, insHora, "×/h"))), loop.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "flex h-3 rounded-full overflow-hidden",
+    style: {
+      background: T.panel2
+    }
+  }, loop.map(a => /*#__PURE__*/React.createElement("div", {
+    key: a.id,
+    style: {
+      background: a.cor,
+      width: a.duracao / loopTotal * 100 + "%"
+    },
+    title: a.cliente
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-2"
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "text-sm font-semibold",
+    style: {
+      color: T.mut
+    }
+  }, "Ordem no painel"), ads.length === 0 && /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: T.mut
+    }
+  }, "Cadastre cotas na aba Cotas."), ads.map((a, i) => {
+    const s = statusDe(a);
+    const noAr = s.k === "no_ar";
+    return /*#__PURE__*/React.createElement("div", {
+      key: a.id,
+      className: "rounded-xl p-3 border flex items-center gap-3",
       style: {
         background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "text-xs",
-          style: {
-            color: T.mut
-          },
-          children: "Loop completo"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-xl font-semibold font-mono mt-0.5",
-          children: tc(loopTotal)
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "text-right",
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "text-xs",
-          style: {
-            color: T.mut
-          },
-          children: "Cada marca toca"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-xl font-semibold font-mono mt-0.5",
-          children: [insHora, "×/h"]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true), loop.length > 0 && /*#__PURE__*/_jsxDEV("div", {
-      className: "flex h-3 rounded-full overflow-hidden",
+        borderColor: T.line,
+        opacity: noAr ? 1 : .5
+      }
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-mono w-5 text-center",
       style: {
-        background: T.panel2
-      },
-      children: loop.map(a => /*#__PURE__*/_jsxDEV("div", {
-        style: {
-          background: a.cor,
-          width: a.duracao / loopTotal * 100 + "%"
-        },
-        title: a.cliente
-      }, a.id, false))
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "flex flex-col gap-2",
-      children: [/*#__PURE__*/_jsxDEV("h2", {
-        className: "text-sm font-semibold",
-        style: {
-          color: T.mut
-        },
-        children: "Ordem no painel"
-      }, void 0, false), ads.length === 0 && /*#__PURE__*/_jsxDEV("p", {
-        className: "text-sm",
-        style: {
-          color: T.mut
-        },
-        children: "Cadastre cotas na aba Cotas."
-      }, void 0, false), ads.map((a, i) => {
-        const s = statusDe(a);
-        const noAr = s.k === "no_ar";
-        return /*#__PURE__*/_jsxDEV("div", {
-          className: "rounded-xl p-3 border flex items-center gap-3",
-          style: {
-            background: T.panel,
-            borderColor: T.line,
-            opacity: noAr ? 1 : .5
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-xs font-mono w-5 text-center",
-            style: {
-              color: T.mut
-            },
-            children: i + 1
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "w-2 h-2 rounded-full shrink-0",
-            style: {
-              background: a.cor
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "flex-1 min-w-0",
-            children: [/*#__PURE__*/_jsxDEV("div", {
-              className: "text-sm truncate",
-              children: a.titulo
-            }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-              className: "text-xs font-mono",
-              style: {
-                color: s.cor
-              },
-              children: [s.label, " · ", a.duracao, "s ", noAr && !a.publicado && /*#__PURE__*/_jsxDEV("span", {
-                style: {
-                  color: T.coral
-                },
-                children: "· pendente"
-              }, void 0, false)]
-            }, void 0, true)]
-          }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-            className: "flex flex-col gap-1",
-            children: [/*#__PURE__*/_jsxDEV("button", {
-              onClick: () => mover(i, -1),
-              disabled: i === 0,
-              className: "p-1 rounded",
-              style: {
-                background: T.panel2,
-                opacity: i === 0 ? .3 : 1
-              },
-              children: /*#__PURE__*/_jsxDEV(ArrowUp, {
-                size: 14
-              }, void 0, false)
-            }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => mover(i, 1),
-              disabled: i === ads.length - 1,
-              className: "p-1 rounded",
-              style: {
-                background: T.panel2,
-                opacity: i === ads.length - 1 ? .3 : 1
-              },
-              children: /*#__PURE__*/_jsxDEV(ArrowDown, {
-                size: 14
-              }, void 0, false)
-            }, void 0, false)]
-          }, void 0, true)]
-        }, a.id, true);
-      })]
-    }, void 0, true)]
-  }, void 0, true);
+        color: T.mut
+      }
+    }, i + 1), /*#__PURE__*/React.createElement("span", {
+      className: "w-2 h-2 rounded-full shrink-0",
+      style: {
+        background: a.cor
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "text-sm truncate"
+    }, a.titulo), /*#__PURE__*/React.createElement("div", {
+      className: "text-xs font-mono",
+      style: {
+        color: s.cor
+      }
+    }, s.label, " · ", a.duracao, "s ", noAr && !a.publicado && /*#__PURE__*/React.createElement("span", {
+      style: {
+        color: T.coral
+      }
+    }, "· pendente"))), /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-col gap-1"
+    }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => mover(i, -1),
+      disabled: i === 0,
+      className: "p-1 rounded",
+      style: {
+        background: T.panel2,
+        opacity: i === 0 ? .3 : 1
+      }
+    }, /*#__PURE__*/React.createElement(ArrowUp, {
+      size: 14
+    })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => mover(i, 1),
+      disabled: i === ads.length - 1,
+      className: "p-1 rounded",
+      style: {
+        background: T.panel2,
+        opacity: i === ads.length - 1 ? .3 : 1
+      }
+    }, /*#__PURE__*/React.createElement(ArrowDown, {
+      size: 14
+    }))));
+  })));
 }
 function NoAr({
   loop,
@@ -1427,180 +1253,156 @@ function NoAr({
     }, 1000);
     return () => clearInterval(ref.current);
   }, [playing, idx, loop]);
-  if (loop.length === 0) return /*#__PURE__*/_jsxDEV("div", {
+  if (loop.length === 0) return /*#__PURE__*/React.createElement("div", {
     className: "rounded-2xl p-8 border text-center",
     style: {
       background: T.panel,
       borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement(MonitorPlay, {
+    size: 28,
+    style: {
+      color: T.mut
     },
-    children: [/*#__PURE__*/_jsxDEV(MonitorPlay, {
-      size: 28,
-      style: {
-        color: T.mut
-      },
-      className: "mx-auto"
-    }, void 0, false), /*#__PURE__*/_jsxDEV("p", {
-      className: "text-sm mt-3",
-      style: {
-        color: T.mut
-      },
-      children: "Nada no ar. Ative cotas para montar o loop."
-    }, void 0, false)]
-  }, void 0, true);
+    className: "mx-auto"
+  }), /*#__PURE__*/React.createElement("p", {
+    className: "text-sm mt-3",
+    style: {
+      color: T.mut
+    }
+  }, "Nada no ar. Ative cotas para montar o loop."));
   const atual = loop[idx] || loop[0];
   const dur = Number(atual.duracao || 1);
   const prox = loop[(idx + 1) % loop.length];
   const decorrido = loop.slice(0, idx).reduce((s, a) => s + Number(a.duracao), 0) + el;
-  return /*#__PURE__*/_jsxDEV("div", {
-    className: "flex flex-col gap-4",
-    children: [/*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl overflow-hidden border mx-auto w-full",
-      style: {
-        borderColor: T.line,
-        maxWidth: 300
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "relative flex items-center justify-center p-8",
-        style: {
-          background: atual.cor,
-          aspectRatio: "9/16"
-        },
-        children: [/*#__PURE__*/_jsxDEV("div", {
-          className: "absolute top-3 left-3 flex items-center gap-1.5",
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            style: {
-              width: 10,
-              height: 10,
-              borderRadius: "50%",
-              background: "#fff",
-              display: "inline-block",
-              animation: playing ? "tally 1.2s infinite" : "none",
-              opacity: playing ? 1 : .4
-            }
-          }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-            className: "text-[11px] font-mono font-bold text-white tracking-wider",
-            children: playing ? "NO AR" : "PAUSADO"
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("span", {
-          className: "absolute top-3 right-3 text-[11px] font-mono text-white",
-          style: {
-            opacity: .85
-          },
-          children: [tc(decorrido), "/", tc(loopTotal)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-          className: "text-center",
-          children: [/*#__PURE__*/_jsxDEV("div", {
-            className: "text-xs font-mono text-white mb-2",
-            style: {
-              opacity: .85
-            },
-            children: atual.cliente
-          }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-            className: "disp text-white leading-tight",
-            style: {
-              fontSize: "22px",
-              textTransform: "uppercase",
-              textShadow: "0 1px 12px rgba(0,0,0,.25)"
-            },
-            children: atual.titulo
-          }, void 0, false), !atual.publicado && /*#__PURE__*/_jsxDEV("div", {
-            className: "mt-3 text-[11px] font-mono text-white inline-block px-2 py-1 rounded",
-            style: {
-              background: "rgba(0,0,0,.35)"
-            },
-            children: "simulação · publicar no ViPlex"
-          }, void 0, false)]
-        }, void 0, true)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "h-1.5",
-        style: {
-          background: T.panel2
-        },
-        children: /*#__PURE__*/_jsxDEV("div", {
-          className: "h-full transition-all",
-          style: {
-            width: el / dur * 100 + "%",
-            background: T.tl
-          }
-        }, void 0, false)
-      }, void 0, false)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "flex items-center gap-3",
-      children: [/*#__PURE__*/_jsxDEV("button", {
-        onClick: () => setPlaying(p => !p),
-        className: "flex-1 rounded-2xl py-3.5 font-medium flex items-center justify-center gap-2",
-        style: {
-          background: playing ? T.panel2 : T.tl,
-          color: playing ? T.fg : "#04211E"
-        },
-        children: playing ? /*#__PURE__*/_jsxDEV("span", {
-          className: "flex items-center gap-2",
-          children: [/*#__PURE__*/_jsxDEV(Pause, {
-            size: 18
-          }, void 0, false), " Pausar"]
-        }, void 0, true) : /*#__PURE__*/_jsxDEV("span", {
-          className: "flex items-center gap-2",
-          children: [/*#__PURE__*/_jsxDEV(Play, {
-            size: 18
-          }, void 0, false), " Tocar loop"]
-        }, void 0, true)
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "rounded-2xl px-4 py-3.5 border font-mono text-sm",
-        style: {
-          background: T.panel,
-          borderColor: T.line,
-          color: T.mut
-        },
-        children: [tc(dur - el), " restante"]
-      }, void 0, true)]
-    }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-      className: "rounded-2xl p-4 border",
-      style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "text-xs mb-2",
-        style: {
-          color: T.mut
-        },
-        children: "A seguir"
-      }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center gap-2",
-        children: [/*#__PURE__*/_jsxDEV("span", {
-          className: "w-2 h-2 rounded-full",
-          style: {
-            background: prox.cor
-          }
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "text-sm truncate",
-          children: prox.titulo
-        }, void 0, false), /*#__PURE__*/_jsxDEV("span", {
-          className: "text-xs font-mono ml-auto",
-          style: {
-            color: T.mut
-          },
-          children: [prox.duracao, "s"]
-        }, void 0, true)]
-      }, void 0, true)]
-    }, void 0, true)]
-  }, void 0, true);
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl overflow-hidden border mx-auto w-full",
+    style: {
+      borderColor: T.line,
+      maxWidth: 300
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "relative flex items-center justify-center p-8",
+    style: {
+      background: atual.cor,
+      aspectRatio: "9/16"
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "absolute top-3 left-3 flex items-center gap-1.5"
+  }, /*#__PURE__*/React.createElement("span", {
+    style: {
+      width: 10,
+      height: 10,
+      borderRadius: "50%",
+      background: "#fff",
+      display: "inline-block",
+      animation: playing ? "tally 1.2s infinite" : "none",
+      opacity: playing ? 1 : .4
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] font-mono font-bold text-white tracking-wider"
+  }, playing ? "NO AR" : "PAUSADO")), /*#__PURE__*/React.createElement("span", {
+    className: "absolute top-3 right-3 text-[11px] font-mono text-white",
+    style: {
+      opacity: .85
+    }
+  }, tc(decorrido), "/", tc(loopTotal)), /*#__PURE__*/React.createElement("div", {
+    className: "text-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs font-mono text-white mb-2",
+    style: {
+      opacity: .85
+    }
+  }, atual.cliente), /*#__PURE__*/React.createElement("div", {
+    className: "disp text-white leading-tight",
+    style: {
+      fontSize: "22px",
+      textTransform: "uppercase",
+      textShadow: "0 1px 12px rgba(0,0,0,.25)"
+    }
+  }, atual.titulo), !atual.publicado && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3 text-[11px] font-mono text-white inline-block px-2 py-1 rounded",
+    style: {
+      background: "rgba(0,0,0,.35)"
+    }
+  }, "simulação · publicar no ViPlex"))), /*#__PURE__*/React.createElement("div", {
+    className: "h-1.5",
+    style: {
+      background: T.panel2
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-full transition-all",
+    style: {
+      width: el / dur * 100 + "%",
+      background: T.tl
+    }
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setPlaying(p => !p),
+    className: "flex-1 rounded-2xl py-3.5 font-medium flex items-center justify-center gap-2",
+    style: {
+      background: playing ? T.panel2 : T.tl,
+      color: playing ? T.fg : "#04211E"
+    }
+  }, playing ? /*#__PURE__*/React.createElement("span", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Pause, {
+    size: 18
+  }), " Pausar") : /*#__PURE__*/React.createElement("span", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Play, {
+    size: 18
+  }), " Tocar loop")), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl px-4 py-3.5 border font-mono text-sm",
+    style: {
+      background: T.panel,
+      borderColor: T.line,
+      color: T.mut
+    }
+  }, tc(dur - el), " restante")), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl p-4 border",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-xs mb-2",
+    style: {
+      color: T.mut
+    }
+  }, "A seguir"), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-2 h-2 rounded-full",
+    style: {
+      background: prox.cor
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm truncate"
+  }, prox.titulo), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-mono ml-auto",
+    style: {
+      color: T.mut
+    }
+  }, prox.duracao, "s"))));
 }
 function Switch({
   on
 }) {
-  return /*#__PURE__*/_jsxDEV("span", {
+  return /*#__PURE__*/React.createElement("span", {
     className: "w-10 h-6 rounded-full flex items-center px-0.5 transition-all",
     style: {
       background: on ? T.tl : T.panel2
-    },
-    children: /*#__PURE__*/_jsxDEV("span", {
-      className: "w-5 h-5 rounded-full bg-white transition-all",
-      style: {
-        marginLeft: on ? 16 : 0
-      }
-    }, void 0, false)
-  }, void 0, false);
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-5 h-5 rounded-full bg-white transition-all",
+    style: {
+      marginLeft: on ? 16 : 0
+    }
+  }));
 }
 function Editor({
   inicial,
@@ -1632,282 +1434,246 @@ function Editor({
   }));
   const valido = f.cliente.trim() && f.titulo.trim();
   const inp = {
-    background: T.bg,
+    background: T.ink,
     borderColor: T.line,
     color: T.fg
   };
-  const Campo = ({
-    label,
-    children
-  }) => /*#__PURE__*/_jsxDEV("label", {
-    className: "block",
-    children: [/*#__PURE__*/_jsxDEV("span", {
-      className: "text-xs",
-      style: {
-        color: T.mut
-      },
-      children: label
-    }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-      className: "mt-1",
-      children: children
-    }, void 0, false)]
-  }, void 0, true);
-  return /*#__PURE__*/_jsxDEV("div", {
+  const PERIODOS = [["1 mês", 1], ["3 meses", 3], ["6 meses", 6], ["1 ano", 12]];
+  return /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 z-50 flex items-end sm:items-center justify-center",
     style: {
       background: "rgba(0,0,0,.6)"
     },
+    onClick: onFechar
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl border max-h-[92vh] overflow-y-auto",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between px-5 pt-5 pb-3 sticky top-0",
+    style: {
+      background: T.panel
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "text-lg font-semibold"
+  }, inicial.id ? "Editar cota" : "Nova cota"), /*#__PURE__*/React.createElement("button", {
     onClick: onFechar,
-    children: /*#__PURE__*/_jsxDEV("div", {
-      className: "w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl border max-h-[92vh] overflow-y-auto",
+    className: "p-1.5 rounded-lg",
+    style: {
+      background: T.panel2
+    }
+  }, /*#__PURE__*/React.createElement(X, {
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "px-5 pb-5 flex flex-col gap-3"
+  }, /*#__PURE__*/React.createElement(Campo, {
+    label: "Cliente"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.cliente,
+    onChange: e => set("cliente", e.target.value),
+    placeholder: "Ex.: Padaria do Zé",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Campo, {
+    label: "Segmento"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.segmento,
+    onChange: e => set("segmento", e.target.value),
+    placeholder: "Ex.: Alimentação",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Valor mensal (R$)"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "numeric",
+    value: f.valor,
+    onChange: e => set("valor", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  }))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Título do anúncio"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.titulo,
+    onChange: e => set("titulo", e.target.value),
+    placeholder: "Ex.: Café + pão na chapa por R$5",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Duração do vídeo"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, DURACOES.map(d => /*#__PURE__*/React.createElement("button", {
+    key: d,
+    onClick: () => set("duracao", d),
+    className: "flex-1 rounded-xl border py-2.5 text-sm font-mono",
+    style: {
+      borderColor: f.duracao === d ? T.tl : T.line,
+      background: f.duracao === d ? "rgba(79,209,197,.12)" : T.ink,
+      color: f.duracao === d ? T.tl : T.mut
+    }
+  }, d, "s")))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Início"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: f.inicio,
+    onChange: e => set("inicio", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Período (calcula o fim a partir do início)"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, PERIODOS.map(([l, n]) => {
+    const active = f.inicio && addMeses(f.inicio, n) === f.fim;
+    return /*#__PURE__*/React.createElement("button", {
+      key: n,
+      onClick: () => set("fim", addMeses(f.inicio, n)),
+      className: "flex-1 rounded-xl border py-2.5 text-xs font-medium",
       style: {
-        background: T.panel,
-        borderColor: T.line
-      },
-      onClick: e => e.stopPropagation(),
-      children: [/*#__PURE__*/_jsxDEV("div", {
-        className: "flex items-center justify-between px-5 pt-5 pb-3 sticky top-0",
-        style: {
-          background: T.panel
-        },
-        children: [/*#__PURE__*/_jsxDEV("h2", {
-          className: "text-lg font-semibold",
-          children: inicial.id ? "Editar cota" : "Nova cota"
-        }, void 0, false), /*#__PURE__*/_jsxDEV("button", {
-          onClick: onFechar,
-          className: "p-1.5 rounded-lg",
-          style: {
-            background: T.panel2
-          },
-          children: /*#__PURE__*/_jsxDEV(X, {
-            size: 18
-          }, void 0, false)
-        }, void 0, false)]
-      }, void 0, true), /*#__PURE__*/_jsxDEV("div", {
-        className: "px-5 pb-5 flex flex-col gap-3",
-        children: [/*#__PURE__*/_jsxDEV(Campo, {
-          label: "Cliente",
-          children: /*#__PURE__*/_jsxDEV("input", {
-            value: f.cliente,
-            onChange: e => set("cliente", e.target.value),
-            placeholder: "Ex.: Padaria do Zé",
-            className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
-            style: inp
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "grid grid-cols-2 gap-3",
-          children: [/*#__PURE__*/_jsxDEV(Campo, {
-            label: "Segmento",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              value: f.segmento,
-              onChange: e => set("segmento", e.target.value),
-              placeholder: "Ex.: Alimentação",
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
-              style: inp
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Campo, {
-            label: "Valor mensal (R$)",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "number",
-              inputMode: "numeric",
-              value: f.valor,
-              onChange: e => set("valor", e.target.value),
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
-              style: inp
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV(Campo, {
-          label: "Título do anúncio",
-          children: /*#__PURE__*/_jsxDEV("input", {
-            value: f.titulo,
-            onChange: e => set("titulo", e.target.value),
-            placeholder: "Ex.: Café + pão na chapa por R$5",
-            className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
-            style: inp
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV(Campo, {
-          label: "Duração do vídeo",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "flex gap-2",
-            children: DURACOES.map(d => /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => set("duracao", d),
-              className: "flex-1 rounded-xl border py-2.5 text-sm font-mono",
-              style: {
-                borderColor: f.duracao === d ? T.tl : T.line,
-                background: f.duracao === d ? "rgba(79,209,197,.12)" : T.bg,
-                color: f.duracao === d ? T.tl : T.mut
-              },
-              children: [d, "s"]
-            }, d, true))
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "grid grid-cols-2 gap-3",
-          children: [/*#__PURE__*/_jsxDEV(Campo, {
-            label: "Início",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "date",
-              value: f.inicio,
-              onChange: e => set("inicio", e.target.value),
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
-              style: inp
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Campo, {
-            label: "Fim",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "date",
-              value: f.fim,
-              onChange: e => set("fim", e.target.value),
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
-              style: inp
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV(Campo, {
-          label: "Cor na tela",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "flex gap-2 mt-1",
-            children: PALETA.map(c => /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => set("cor", c),
-              className: "w-8 h-8 rounded-full",
-              style: {
-                background: c,
-                outline: f.cor === c ? "2px solid " + T.fg : "none",
-                outlineOffset: 2
-              }
-            }, c, false))
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "grid grid-cols-2 gap-3",
-          children: [/*#__PURE__*/_jsxDEV(Campo, {
-            label: "Forma de pagamento",
-            children: /*#__PURE__*/_jsxDEV("select", {
-              value: f.forma,
-              onChange: e => set("forma", e.target.value),
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
-              style: inp,
-              children: ["Pix", "Dinheiro", "Cartão", "Boleto", "Transferência"].map(o => /*#__PURE__*/_jsxDEV("option", {
-                value: o,
-                children: o
-              }, o, false))
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Campo, {
-            label: "Cobrança",
-            children: /*#__PURE__*/_jsxDEV("div", {
-              className: "flex gap-2",
-              children: [["mensal", "Mensal"], ["avista", "À vista"]].map(([v, l]) => /*#__PURE__*/_jsxDEV("button", {
-                onClick: () => set("cobranca", v),
-                className: "flex-1 rounded-xl border py-2.5 text-sm",
-                style: {
-                  borderColor: f.cobranca === v ? T.tl : T.line,
-                  background: f.cobranca === v ? "rgba(79,209,197,.12)" : T.bg,
-                  color: f.cobranca === v ? T.tl : T.mut
-                },
-                children: l
-              }, v, false))
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV(Campo, {
-          label: "Status do pagamento",
-          children: /*#__PURE__*/_jsxDEV("div", {
-            className: "flex gap-2",
-            children: [["pago", "Pago"], ["pendente", "Pendente"], ["atrasado", "Atrasado"]].map(([v, l]) => /*#__PURE__*/_jsxDEV("button", {
-              onClick: () => set("pagamento", v),
-              className: "flex-1 rounded-xl border py-2.5 text-sm",
-              style: {
-                borderColor: f.pagamento === v ? PAGTO[v].cor : T.line,
-                background: f.pagamento === v ? "rgba(255,255,255,.05)" : T.bg,
-                color: f.pagamento === v ? PAGTO[v].cor : T.mut
-              },
-              children: l
-            }, v, false))
-          }, void 0, false)
-        }, void 0, false), /*#__PURE__*/_jsxDEV("div", {
-          className: "grid grid-cols-2 gap-3",
-          children: [/*#__PURE__*/_jsxDEV(Campo, {
-            label: "Dia do venc. (se mensal)",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              type: "number",
-              inputMode: "numeric",
-              value: f.diaVenc,
-              onChange: e => set("diaVenc", e.target.value),
-              placeholder: "ex.: 10",
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
-              style: inp
-            }, void 0, false)
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Campo, {
-            label: "Telefone (opcional)",
-            children: /*#__PURE__*/_jsxDEV("input", {
-              value: f.telefone,
-              onChange: e => set("telefone", e.target.value),
-              placeholder: "(18) 99999-0000",
-              className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
-              style: inp
-            }, void 0, false)
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => set("exclusivo", !f.exclusivo),
-          className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
-          style: {
-            borderColor: T.line
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-sm flex items-center gap-2",
-            children: [/*#__PURE__*/_jsxDEV(Lock, {
-              size: 14,
-              style: {
-                color: T.violet
-              }
-            }, void 0, false), " Exclusividade de segmento"]
-          }, void 0, true), /*#__PURE__*/_jsxDEV(Switch, {
-            on: f.exclusivo
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => set("ativo", !f.ativo),
-          className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
-          style: {
-            borderColor: T.line
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-sm",
-            children: "Colocar no ar"
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Switch, {
-            on: f.ativo
-          }, void 0, false)]
-        }, void 0, true), inicial.id && /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => set("publicado", !f.publicado),
-          className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
-          style: {
-            borderColor: T.line
-          },
-          children: [/*#__PURE__*/_jsxDEV("span", {
-            className: "text-sm",
-            children: "Já publicado no ViPlex"
-          }, void 0, false), /*#__PURE__*/_jsxDEV(Switch, {
-            on: f.publicado
-          }, void 0, false)]
-        }, void 0, true), /*#__PURE__*/_jsxDEV("button", {
-          onClick: () => valido && onSalvar({
-            ...f,
-            valor: Number(f.valor) || 0
-          }),
-          disabled: !valido,
-          className: "rounded-2xl py-3.5 font-medium mt-1",
-          style: {
-            background: valido ? T.tl : T.panel2,
-            color: valido ? "#04211E" : T.mut
-          },
-          children: inicial.id ? "Salvar alterações" : "Cadastrar cota"
-        }, void 0, false), !inicial.id && /*#__PURE__*/_jsxDEV("p", {
-          className: "text-xs text-center",
-          style: {
-            color: T.mut
-          },
-          children: "Novas cotas entram como “pendente no painel” até você publicar no ViPlex."
-        }, void 0, false)]
-      }, void 0, true)]
-    }, void 0, true)
-  }, void 0, false);
+        borderColor: active ? T.tl : T.line,
+        background: active ? "rgba(79,209,197,.12)" : T.ink,
+        color: active ? T.tl : T.mut
+      }
+    }, l);
+  }))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Fim (ou ajuste manualmente)"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: f.fim,
+    onChange: e => set("fim", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Cor na tela"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2 mt-1"
+  }, PALETA.map(c => /*#__PURE__*/React.createElement("button", {
+    key: c,
+    onClick: () => set("cor", c),
+    className: "w-8 h-8 rounded-full",
+    style: {
+      background: c,
+      outline: f.cor === c ? "2px solid " + T.fg : "none",
+      outlineOffset: 2
+    }
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Campo, {
+    label: "Forma de pagamento"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: f.forma,
+    onChange: e => set("forma", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  }, ["Pix", "Dinheiro", "Cartão", "Boleto", "Transferência"].map(o => /*#__PURE__*/React.createElement("option", {
+    key: o,
+    value: o
+  }, o)))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Cobrança"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, [["mensal", "Mensal"], ["avista", "À vista"]].map(([v, l]) => /*#__PURE__*/React.createElement("button", {
+    key: v,
+    onClick: () => set("cobranca", v),
+    className: "flex-1 rounded-xl border py-2.5 text-sm",
+    style: {
+      borderColor: f.cobranca === v ? T.tl : T.line,
+      background: f.cobranca === v ? "rgba(79,209,197,.12)" : T.ink,
+      color: f.cobranca === v ? T.tl : T.mut
+    }
+  }, l))))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Status do pagamento"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-2"
+  }, [["pago", "Pago"], ["pendente", "Pendente"], ["atrasado", "Atrasado"]].map(([v, l]) => /*#__PURE__*/React.createElement("button", {
+    key: v,
+    onClick: () => set("pagamento", v),
+    className: "flex-1 rounded-xl border py-2.5 text-sm",
+    style: {
+      borderColor: f.pagamento === v ? PAGTO[v].cor : T.line,
+      background: f.pagamento === v ? "rgba(255,255,255,.05)" : T.ink,
+      color: f.pagamento === v ? PAGTO[v].cor : T.mut
+    }
+  }, l)))), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Campo, {
+    label: "Dia do venc. (se mensal)"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "numeric",
+    value: f.diaVenc,
+    onChange: e => set("diaVenc", e.target.value),
+    placeholder: "ex.: 10",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Telefone (opcional)"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.telefone,
+    onChange: e => set("telefone", e.target.value),
+    placeholder: "(18) 99999-0000",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  }))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => set("exclusivo", !f.exclusivo),
+    className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-sm flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Lock, {
+    size: 14,
+    style: {
+      color: T.violet
+    }
+  }), " Exclusividade de segmento"), /*#__PURE__*/React.createElement(Switch, {
+    on: f.exclusivo
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: () => set("ativo", !f.ativo),
+    className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-sm"
+  }, "Colocar no ar"), /*#__PURE__*/React.createElement(Switch, {
+    on: f.ativo
+  })), inicial.id && /*#__PURE__*/React.createElement("button", {
+    onClick: () => set("publicado", !f.publicado),
+    className: "flex items-center justify-between rounded-xl border px-3 py-2.5",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-sm"
+  }, "Já publicado no ViPlex"), /*#__PURE__*/React.createElement(Switch, {
+    on: f.publicado
+  })), /*#__PURE__*/React.createElement("button", {
+    onClick: () => valido && onSalvar({
+      ...f,
+      valor: Number(f.valor) || 0
+    }),
+    disabled: !valido,
+    className: "rounded-2xl py-3.5 font-medium mt-1",
+    style: {
+      background: valido ? T.tl : T.panel2,
+      color: valido ? "#04211E" : T.mut
+    }
+  }, inicial.id ? "Salvar alterações" : "Cadastrar cota"), !inicial.id && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-center",
+    style: {
+      color: T.mut
+    }
+  }, "Novas cotas entram como “pendente no painel” até você publicar no ViPlex."))));
 }
-ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/_jsxDEV(App, {}, void 0, false));
+ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
 </script>
 </body>
 </html>
