@@ -43,6 +43,7 @@ const T = {
 };
 const PALETA = [T.tl, T.coral, T.violet, T.blue, T.amber, "#34D399"];
 const DURACOES = [5, 10, 15];
+const FORMAS = ["Pix", "Dinheiro", "Cartão", "Boleto", "Transferência"];
 const KEY = "newmidia-gestao-v1";
 const HOY = new Date().toISOString().slice(0, 10);
 const offset = d => {
@@ -72,6 +73,10 @@ const tc = s => {
 const dataBR = d => d ? d.split("-").reverse().join("/") : "—";
 const diasAte = d => Math.ceil((new Date(d) - new Date(HOY)) / 86400000);
 const vigente = a => (!a.inicio || a.inicio <= HOY) && (!a.fim || a.fim >= HOY);
+const somaPagos = a => (a.pagamentos || []).reduce((s, p) => s + Number(p.valor || 0), 0);
+const mesCurto = m => new Date(m + "-01T00:00:00").toLocaleDateString("pt-BR", {
+  month: "short"
+}).replace(".", "");
 function statusDe(a) {
   if (a.fim && a.fim < HOY) return {
     k: "expirado",
@@ -373,6 +378,11 @@ const Lock = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.cre
 }), /*#__PURE__*/React.createElement("path", {
   d: "M7 11V7a5 5 0 0 1 10 0v4"
 }));
+const Wallet = p => /*#__PURE__*/React.createElement(Ic, p, /*#__PURE__*/React.createElement("path", {
+  d: "M19 7V5a2 2 0 0 0-2-2H5a2 2 0 0 0 0 4h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5"
+}), /*#__PURE__*/React.createElement("path", {
+  d: "M18 12a1 1 0 0 0 0 2h3v-2Z"
+}));
 const SEED = [{
   id: 1,
   cliente: "Ótica Visão Clara",
@@ -390,7 +400,18 @@ const SEED = [{
   pagamento: "pago",
   forma: "Pix",
   diaVenc: "10",
-  telefone: "(18) 99999-0001"
+  telefone: "(18) 99999-0001",
+  pagamentos: [{
+    id: 11,
+    data: offset(-38),
+    valor: 675,
+    forma: "Pix"
+  }, {
+    id: 12,
+    data: offset(-6),
+    valor: 675,
+    forma: "Pix"
+  }]
 }, {
   id: 2,
   cliente: "Auto Peças Veloz",
@@ -408,7 +429,13 @@ const SEED = [{
   pagamento: "pago",
   forma: "Transferência",
   diaVenc: "",
-  telefone: "(18) 99999-0002"
+  telefone: "(18) 99999-0002",
+  pagamentos: [{
+    id: 21,
+    data: offset(-58),
+    valor: 945,
+    forma: "Transferência"
+  }]
 }, {
   id: 3,
   cliente: "Pizzaria Bella Massa",
@@ -426,7 +453,8 @@ const SEED = [{
   pagamento: "atrasado",
   forma: "Pix",
   diaVenc: "5",
-  telefone: "(18) 99999-0003"
+  telefone: "(18) 99999-0003",
+  pagamentos: []
 }, {
   id: 4,
   cliente: "Academia Corpo em Forma",
@@ -444,7 +472,8 @@ const SEED = [{
   pagamento: "pendente",
   forma: "Boleto",
   diaVenc: "15",
-  telefone: "(18) 99999-0004"
+  telefone: "(18) 99999-0004",
+  pagamentos: []
 }];
 function load() {
   try {
@@ -472,6 +501,7 @@ function App() {
   const [cotasTotal, setCotasTotal] = useState(saved && saved.cotasTotal ? saved.cotasTotal : 10);
   const [tab, setTab] = useState("painel");
   const [editing, setEditing] = useState(null);
+  const [paying, setPaying] = useState(null);
   const persist = (a, t) => {
     try {
       localStorage.setItem(KEY, JSON.stringify({
@@ -490,7 +520,8 @@ function App() {
     if (ad.id) next = ads.map(a => a.id === ad.id ? ad : a);else next = [...ads, {
       ...ad,
       id: Date.now(),
-      publicado: false
+      publicado: false,
+      pagamentos: []
     }];
     commit(next);
     setEditing(null);
@@ -508,6 +539,14 @@ function App() {
     ...a,
     pagamento: a.pagamento === "pendente" ? "pago" : a.pagamento === "pago" ? "atrasado" : "pendente"
   } : a));
+  const addPagamento = (id, pag) => commit(ads.map(a => a.id === id ? {
+    ...a,
+    pagamentos: [...(a.pagamentos || []), pag]
+  } : a));
+  const delPagamento = (id, pagId) => commit(ads.map(a => a.id === id ? {
+    ...a,
+    pagamentos: (a.pagamentos || []).filter(p => p.id !== pagId)
+  } : a));
   const mover = (i, dir) => {
     const j = i + dir;
     if (j < 0 || j >= ads.length) return;
@@ -516,6 +555,32 @@ function App() {
     n[i] = n[j];
     n[j] = t;
     commit(n);
+  };
+  const exportar = () => {
+    try {
+      const blob = new Blob([JSON.stringify({
+        ads,
+        cotasTotal
+      }, null, 2)], {
+        type: "application/json"
+      });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "newmidia-gestao-backup.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    } catch (e) {
+      alert("Não foi possível exportar.");
+    }
+  };
+  const onImport = o => {
+    if (o && Array.isArray(o.ads)) {
+      commit(o.ads, o.cotasTotal || cotasTotal);
+      alert("Backup importado.");
+    } else alert("Arquivo inválido.");
   };
   const loop = ads.filter(a => statusDe(a).k === "no_ar");
   const loopTotal = loop.reduce((s, a) => s + Number(a.duracao || 0), 0);
@@ -541,6 +606,10 @@ function App() {
     id: "cotas",
     label: "Cotas",
     icon: Ticket
+  }, {
+    id: "caixa",
+    label: "Caixa",
+    icon: Wallet
   }, {
     id: "grade",
     label: "Grade",
@@ -614,7 +683,13 @@ function App() {
     remover,
     toggleAtivo,
     togglePub,
-    cyclePagto
+    cyclePagto,
+    setPaying
+  }), tab === "caixa" && /*#__PURE__*/React.createElement(Caixa, {
+    ads,
+    exportar,
+    onImport,
+    setTab
   }), tab === "grade" && /*#__PURE__*/React.createElement(Grade, {
     ads,
     loop,
@@ -646,19 +721,27 @@ function App() {
     }), badge && /*#__PURE__*/React.createElement("span", {
       className: "absolute top-2",
       style: {
-        right: "calc(50% - 18px)",
+        right: "calc(50% - 14px)",
         width: 8,
         height: 8,
         borderRadius: "50%",
         background: T.coral
       }
     }), /*#__PURE__*/React.createElement("span", {
-      className: "text-[11px]"
+      className: "text-[10px]"
     }, n.label));
   })), editing && /*#__PURE__*/React.createElement(Editor, {
     inicial: editing,
     onSalvar: salvar,
     onFechar: () => setEditing(null)
+  }), paying && /*#__PURE__*/React.createElement(PagModal, {
+    cota: paying,
+    onSalvar: pag => {
+      addPagamento(paying.id, pag);
+      setPaying(null);
+    },
+    onExcluir: pagId => delPagamento(paying.id, pagId),
+    onFechar: () => setPaying(null)
   }));
 }
 function Painel({
@@ -944,13 +1027,249 @@ function Painel({
     size: 18
   }), " Ver o painel no ar"));
 }
+function Caixa({
+  ads,
+  exportar,
+  onImport,
+  setTab
+}) {
+  const fileRef = useRef();
+  const mesAtual = HOY.slice(0, 7);
+  const recebidoMes = ads.reduce((s, a) => s + (a.pagamentos || []).filter(p => (p.data || "").slice(0, 7) === mesAtual).reduce((x, p) => x + Number(p.valor || 0), 0), 0);
+  const contratado = ads.filter(vigente).reduce((s, a) => s + Number(a.valor || 0), 0);
+  const aReceberMes = Math.max(0, contratado - recebidoMes);
+  const recebidoTotal = ads.reduce((s, a) => s + somaPagos(a), 0);
+  const meses = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(1);
+    d.setMonth(d.getMonth() - i);
+    meses.push(d.toISOString().slice(0, 7));
+  }
+  const porMes = meses.map(m => ads.reduce((s, a) => s + (a.pagamentos || []).filter(p => (p.data || "").slice(0, 7) === m).reduce((x, p) => x + Number(p.valor || 0), 0), 0));
+  const maxV = Math.max(1, ...porMes);
+  const todos = [];
+  ads.forEach(a => (a.pagamentos || []).forEach(p => todos.push({
+    ...p,
+    cliente: a.cliente,
+    cor: a.cor
+  })));
+  todos.sort((x, y) => (y.data || "").localeCompare(x.data || ""));
+  const ultimos = todos.slice(0, 6);
+  const handleFile = e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        onImport(JSON.parse(r.result));
+      } catch (err) {
+        alert("Arquivo inválido.");
+      }
+    };
+    r.readAsText(file);
+    e.target.value = "";
+  };
+  return /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl border p-4",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow",
+    style: {
+      color: T.mut
+    }
+  }, "Recebido este mês"), /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "44px",
+      lineHeight: .9,
+      marginTop: "6px",
+      color: T.tl
+    }
+  }, brl(recebidoMes))), /*#__PURE__*/React.createElement("div", {
+    className: "flex rounded-2xl border overflow-hidden",
+    style: {
+      borderColor: T.line,
+      background: T.panel
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "22px",
+      lineHeight: .9,
+      color: T.coral
+    }
+  }, brl(aReceberMes)), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".08em"
+    }
+  }, "A receber")), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4 border-l",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "22px",
+      lineHeight: .9
+    }
+  }, brl(contratado)), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".08em"
+    }
+  }, "Contratado/mês")), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4 border-l",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "22px",
+      lineHeight: .9,
+      color: T.tl
+    }
+  }, brl(recebidoTotal)), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".08em"
+    }
+  }, "Recebido total"))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl border p-4",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mb-4",
+    style: {
+      color: T.mut
+    }
+  }, "Recebido — últimos 6 meses"), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-end gap-2",
+    style: {
+      height: 120
+    }
+  }, porMes.map((v, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex-1 flex flex-col items-center justify-end gap-1 h-full"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "text-[9px] font-mono",
+    style: {
+      color: T.mut
+    }
+  }, v > 0 ? v / 1000 >= 1 ? (v / 1000).toFixed(1) + "k" : v : ""), /*#__PURE__*/React.createElement("div", {
+    className: "w-full rounded-t",
+    style: {
+      height: Math.max(3, v / maxV * 80) + "px",
+      background: i === porMes.length - 1 ? T.tl : T.panel2
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "text-[9px] font-mono",
+    style: {
+      color: i === porMes.length - 1 ? T.tl : T.mut
+    }
+  }, mesCurto(meses[i])))))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl border p-4",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mb-3",
+    style: {
+      color: T.mut
+    }
+  }, "Últimos pagamentos"), ultimos.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: T.mut
+    }
+  }, "Nenhum pagamento registrado. Registre em Cotas → “+ Pagto”.") : /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-2"
+  }, ultimos.map((p, i) => /*#__PURE__*/React.createElement("div", {
+    key: i,
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 min-w-0"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-2 h-2 rounded-full shrink-0",
+    style: {
+      background: p.cor
+    }
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm truncate"
+  }, p.cliente)), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-mono shrink-0 ml-2",
+    style: {
+      color: T.mut
+    }
+  }, dataBR(p.data), " · ", brl(p.valor)))))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-2xl border p-4",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mb-3",
+    style: {
+      color: T.mut
+    }
+  }, "Backup dos dados"), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: exportar,
+    className: "flex-1 rounded-xl py-3 font-medium text-sm",
+    style: {
+      background: T.tl,
+      color: "#04211E"
+    }
+  }, "Exportar"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => fileRef.current && fileRef.current.click(),
+    className: "flex-1 rounded-xl py-3 font-medium text-sm border",
+    style: {
+      borderColor: T.line,
+      color: T.fg
+    }
+  }, "Importar"), /*#__PURE__*/React.createElement("input", {
+    ref: fileRef,
+    type: "file",
+    accept: "application/json,.json",
+    style: {
+      display: "none"
+    },
+    onChange: handleFile
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs mt-3",
+    style: {
+      color: T.mut
+    }
+  }, "Os dados ficam salvos só neste navegador. Exporte de vez em quando para não perder o histórico.")));
+}
 function Cotas({
   ads,
   setEditing,
   remover,
   toggleAtivo,
   togglePub,
-  cyclePagto
+  cyclePagto,
+  setPaying
 }) {
   return /*#__PURE__*/React.createElement("div", {
     className: "flex flex-col gap-3"
@@ -978,6 +1297,7 @@ function Cotas({
   }, "Nenhuma cota ainda. Toque em “Nova cota” para começar."), ads.map(a => {
     const s = statusDe(a);
     const pendente = s.k === "no_ar" && !a.publicado;
+    const rec = somaPagos(a);
     return /*#__PURE__*/React.createElement("div", {
       key: a.id,
       className: "rounded-2xl p-4 border",
@@ -1052,7 +1372,12 @@ function Cotas({
       style: {
         color: T.mut
       }
-    }, brl(a.valor), " · ", a.cobranca === "avista" ? "à vista" : "mensal" + (a.diaVenc ? " (venc. dia " + a.diaVenc + ")" : ""), " · ", a.forma))), pendente && /*#__PURE__*/React.createElement("div", {
+    }, brl(a.valor), " · ", a.cobranca === "avista" ? "à vista" : "mensal" + (a.diaVenc ? " (venc. dia " + a.diaVenc + ")" : ""), " · ", a.forma), rec > 0 && /*#__PURE__*/React.createElement("p", {
+      className: "text-xs mt-0.5 font-mono",
+      style: {
+        color: T.tl
+      }
+    }, "Recebido: ", brl(rec), " · ", (a.pagamentos || []).length, " pagto(s)"))), pendente && /*#__PURE__*/React.createElement("div", {
       className: "mt-3 rounded-lg px-3 py-2 text-xs flex items-center gap-2",
       style: {
         background: "rgba(255,122,89,.08)",
@@ -1066,24 +1391,33 @@ function Cotas({
         borderColor: T.line
       }
     }, /*#__PURE__*/React.createElement("button", {
+      onClick: () => setPaying(a),
+      className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1",
+      style: {
+        background: T.tl,
+        color: "#04211E"
+      }
+    }, /*#__PURE__*/React.createElement(Plus, {
+      size: 12
+    }), " Pagto"), /*#__PURE__*/React.createElement("button", {
       onClick: () => cyclePagto(a.id),
       className: "text-xs px-3 py-1.5 rounded-lg",
       style: {
         background: T.panel2,
         color: PAGTO[a.pagamento].cor
       }
-    }, "Pagto: ", PAGTO[a.pagamento].label), /*#__PURE__*/React.createElement("button", {
+    }, "Status: ", PAGTO[a.pagamento].label), /*#__PURE__*/React.createElement("button", {
       onClick: () => togglePub(a.id),
       className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5",
       style: {
         background: a.publicado ? T.panel2 : T.coral,
         color: a.publicado ? T.mut : "#2a0f06"
       }
-    }, a.publicado ? "Marcar não publicado" : /*#__PURE__*/React.createElement("span", {
+    }, a.publicado ? "Não publicado" : /*#__PURE__*/React.createElement("span", {
       className: "flex items-center gap-1.5"
     }, /*#__PURE__*/React.createElement(CheckCircle2, {
       size: 13
-    }), " Publiquei no ViPlex")), /*#__PURE__*/React.createElement("button", {
+    }), " Publiquei")), /*#__PURE__*/React.createElement("button", {
       onClick: () => toggleAtivo(a.id),
       className: "text-xs px-3 py-1.5 rounded-lg",
       style: {
@@ -1099,7 +1433,7 @@ function Cotas({
       }
     }, /*#__PURE__*/React.createElement(Pencil, {
       size: 13
-    }), " Editar"), /*#__PURE__*/React.createElement("button", {
+    })), /*#__PURE__*/React.createElement("button", {
       onClick: () => remover(a.id),
       className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ml-auto",
       style: {
@@ -1404,6 +1738,134 @@ function Switch({
     }
   }));
 }
+function PagModal({
+  cota,
+  onSalvar,
+  onExcluir,
+  onFechar
+}) {
+  const [p, setP] = useState({
+    data: HOY,
+    valor: String(cota.valor || ""),
+    forma: cota.forma || "Pix"
+  });
+  const set = (k, v) => setP(s => ({
+    ...s,
+    [k]: v
+  }));
+  const inp = {
+    background: T.ink,
+    borderColor: T.line,
+    color: T.fg
+  };
+  const valido = Number(p.valor) > 0 && p.data;
+  const hist = (cota.pagamentos || []).slice().sort((x, y) => (y.data || "").localeCompare(x.data || ""));
+  return /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 flex items-end sm:items-center justify-center",
+    style: {
+      background: "rgba(0,0,0,.6)"
+    },
+    onClick: onFechar
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-full sm:max-w-md rounded-t-3xl sm:rounded-3xl border max-h-[92vh] overflow-y-auto",
+    style: {
+      background: T.panel,
+      borderColor: T.line
+    },
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between px-5 pt-5 pb-3 sticky top-0",
+    style: {
+      background: T.panel
+    }
+  }, /*#__PURE__*/React.createElement("h2", {
+    className: "text-lg font-semibold"
+  }, "Registrar pagamento"), /*#__PURE__*/React.createElement("button", {
+    onClick: onFechar,
+    className: "p-1.5 rounded-lg",
+    style: {
+      background: T.panel2
+    }
+  }, /*#__PURE__*/React.createElement(X, {
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "px-5 pb-5 flex flex-col gap-3"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm",
+    style: {
+      color: T.mut
+    }
+  }, cota.cliente, " · ", cota.titulo), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 gap-3"
+  }, /*#__PURE__*/React.createElement(Campo, {
+    label: "Data"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "date",
+    value: p.data,
+    onChange: e => set("data", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Valor (R$)"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "number",
+    inputMode: "numeric",
+    value: p.valor,
+    onChange: e => set("valor", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  }))), /*#__PURE__*/React.createElement(Campo, {
+    label: "Forma"
+  }, /*#__PURE__*/React.createElement("select", {
+    value: p.forma,
+    onChange: e => set("forma", e.target.value),
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  }, FORMAS.map(o => /*#__PURE__*/React.createElement("option", {
+    key: o,
+    value: o
+  }, o)))), /*#__PURE__*/React.createElement("button", {
+    onClick: () => valido && onSalvar({
+      id: Date.now(),
+      data: p.data,
+      valor: Number(p.valor) || 0,
+      forma: p.forma
+    }),
+    disabled: !valido,
+    className: "rounded-2xl py-3.5 font-medium",
+    style: {
+      background: valido ? T.tl : T.panel2,
+      color: valido ? "#04211E" : T.mut
+    }
+  }, "Registrar pagamento"), hist.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "mt-1"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mb-2",
+    style: {
+      color: T.mut
+    }
+  }, "Histórico"), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col gap-1"
+  }, hist.map(pg => /*#__PURE__*/React.createElement("div", {
+    key: pg.id,
+    className: "flex items-center justify-between text-sm py-1.5 border-t",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-mono",
+    style: {
+      color: T.mut
+    }
+  }, dataBR(pg.data), " · ", brl(pg.valor), " · ", pg.forma), /*#__PURE__*/React.createElement("button", {
+    onClick: () => onExcluir(pg.id),
+    style: {
+      color: T.coral
+    }
+  }, /*#__PURE__*/React.createElement(Trash2, {
+    size: 13
+  })))))))));
+}
 function Editor({
   inicial,
   onSalvar,
@@ -1571,7 +2033,7 @@ function Editor({
     onChange: e => set("forma", e.target.value),
     className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
     style: inp
-  }, ["Pix", "Dinheiro", "Cartão", "Boleto", "Transferência"].map(o => /*#__PURE__*/React.createElement("option", {
+  }, FORMAS.map(o => /*#__PURE__*/React.createElement("option", {
     key: o,
     value: o
   }, o)))), /*#__PURE__*/React.createElement(Campo, {
