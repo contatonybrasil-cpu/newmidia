@@ -82,6 +82,33 @@ function mesesEntre(ini, fim) {
   return Math.max(1, Math.round(dias / 30.44));
 }
 const valorContrato = a => Number(a.valor || 0) * mesesEntre(a.inicio, a.fim);
+const CONTRATADA = {
+  nome: "B2B.ecom Ltda",
+  cnpj: "65.449.345/0001-72",
+  cidade: "Presidente Prudente/SP"
+};
+function gerarContrato(a) {
+  var w = window.open("", "_blank");
+  if (!w) {
+    alert("Permita pop-ups para gerar o contrato.");
+    return;
+  }
+  var meses = mesesEntre(a.inicio, a.fim);
+  var cob = a.cobranca === "avista" ? "\u00e0 vista pelo per\u00edodo total (" + meses + " meses)" : "mensal, com vencimento no dia " + (a.diaVenc || "__") + " de cada m\u00eas";
+  var total = valorContrato(a);
+  var hoje = new Date().toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric"
+  });
+  var excl = a.exclusivo ? '<p><b>6. EXCLUSIVIDADE DE SEGMENTO.</b> Durante a vig\u00eancia deste contrato, a NEW M\u00cdDIA compromete-se a n\u00e3o veicular no painel an\u00fancio de concorrente direto do ANUNCIANTE no segmento de <b>' + (a.segmento || "\u2014") + '</b>.</p>' : '';
+  var n7 = a.exclusivo ? '7' : '6',
+    n8 = a.exclusivo ? '8' : '7';
+  var css = "@media print{.noprint{display:none}} body{font-family:Georgia,serif;max-width:720px;margin:0 auto;padding:40px;color:#111;line-height:1.6;font-size:14px} h1{font-size:18px;text-align:center;margin-bottom:26px} h1 span{display:block;font-size:11px;font-weight:normal;color:#555;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px} p{margin:0 0 12px} .parte{margin-bottom:10px} .sign{margin-top:64px;display:flex;justify-content:space-between;gap:40px;text-align:center} .sign div{flex:1;border-top:1px solid #111;padding-top:8px;font-size:12px} .bar{position:sticky;top:0;background:#0B0E14;padding:12px;text-align:center;margin:-40px -40px 30px} .bar button{background:#4FD1C5;color:#04211E;border:none;padding:10px 22px;border-radius:8px;font-weight:bold;cursor:pointer;font-family:sans-serif;font-size:14px}";
+  var html = "<!DOCTYPE html><html lang=\"pt-BR\"><head><meta charset=\"UTF-8\"><title>Contrato - " + a.cliente + "</title><style>" + css + "</style></head><body>" + "<div class=\"bar noprint\"><button onclick=\"window.print()\">Imprimir / Salvar PDF</button></div>" + "<h1><span>New M\u00eddia \u00b7 Painel de LED \u00b7 Presidente Prudente</span>Contrato de Veicula\u00e7\u00e3o de Publicidade em Painel de LED</h1>" + "<p class=\"parte\"><b>CONTRATADA:</b> " + CONTRATADA.nome + ", inscrita no CNPJ n\u00ba " + CONTRATADA.cnpj + ", com sede em " + CONTRATADA.cidade + ", doravante denominada <b>NEW M\u00cdDIA</b>.</p>" + "<p class=\"parte\"><b>CONTRATANTE:</b> " + a.cliente + ", inscrito(a) no CPF/CNPJ n\u00ba ________________" + (a.telefone ? ", telefone " + a.telefone : "") + ", doravante denominado(a) <b>ANUNCIANTE</b>.</p>" + "<p>As partes celebram o presente contrato, que se reger\u00e1 pelas cl\u00e1usulas a seguir:</p>" + "<p><b>1. OBJETO.</b> A NEW M\u00cdDIA veicular\u00e1 o an\u00fancio \u201c<b>" + a.titulo + "</b>\u201d do ANUNCIANTE em seu painel de LED digital localizado na Av. Quatorze de Setembro, Presidente Prudente/SP, mediante 1 (uma) cota de exibi\u00e7\u00e3o.</p>" + "<p><b>2. VEICULA\u00c7\u00c3O.</b> Dura\u00e7\u00e3o de <b>" + a.duracao + " segundos</b> por exibi\u00e7\u00e3o, em loop rotativo com as demais cotas; painel em funcionamento das 07h \u00e0s 23h30, 6 (seis) dias por semana; material em v\u00eddeo vertical fornecido pelo ANUNCIANTE. A troca de arte durante a vig\u00eancia \u00e9 feita sem custo adicional.</p>" + "<p><b>3. PRAZO.</b> De <b>" + dataBR(a.inicio) + "</b> a <b>" + dataBR(a.fim) + "</b> (" + meses + " meses).</p>" + "<p><b>4. VALOR E PAGAMENTO.</b> Valor de <b>" + brl(a.valor) + "</b> (" + cob + "), totalizando <b>" + brl(total) + "</b> no per\u00edodo. Forma de pagamento: <b>" + a.forma + "</b>. A veicula\u00e7\u00e3o inicia-se ap\u00f3s a confirma\u00e7\u00e3o do pagamento.</p>" + "<p><b>5. OBRIGA\u00c7\u00d5ES.</b> O ANUNCIANTE \u00e9 respons\u00e1vel pelo conte\u00fado e pela veracidade do material, respondendo por direitos de terceiros e pela legalidade do que for exibido. A NEW M\u00cdDIA poder\u00e1 recusar material ilegal, ofensivo ou incompat\u00edvel. A produ\u00e7\u00e3o do v\u00eddeo \u00e9 de responsabilidade do ANUNCIANTE, podendo ser contratada \u00e0 parte.</p>" + excl + "<p><b>" + n7 + ". RESCIS\u00c3O.</b> O atraso de pagamento superior a 10 (dez) dias ou o descumprimento de qualquer cl\u00e1usula faculta \u00e0 parte prejudicada rescindir o contrato. Valores pagos referentes a per\u00edodos n\u00e3o veiculados por culpa do ANUNCIANTE n\u00e3o ser\u00e3o restitu\u00eddos.</p>" + "<p><b>" + n8 + ". FORO.</b> Fica eleito o foro da comarca de Presidente Prudente/SP.</p>" + "<p style=\"margin-top:30px\">Presidente Prudente, " + hoje + ".</p>" + "<div class=\"sign\"><div>NEW M\u00cdDIA (Contratada)</div><div>" + a.cliente + " (Anunciante)</div></div>" + "</body></html>";
+  w.document.write(html);
+  w.document.close();
+}
 const mesCurto = m => new Date(m + "-01T00:00:00").toLocaleDateString("pt-BR", {
   month: "short"
 }).replace(".", "");
@@ -1442,6 +1469,13 @@ function Cotas({
     }, /*#__PURE__*/React.createElement(Pencil, {
       size: 13
     })), /*#__PURE__*/React.createElement("button", {
+      onClick: () => gerarContrato(a),
+      className: "text-xs px-3 py-1.5 rounded-lg",
+      style: {
+        background: T.panel2,
+        color: T.fg
+      }
+    }, "Contrato"), /*#__PURE__*/React.createElement("button", {
       onClick: () => remover(a.id),
       className: "text-xs px-3 py-1.5 rounded-lg flex items-center gap-1.5 ml-auto",
       style: {
