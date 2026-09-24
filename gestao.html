@@ -74,6 +74,14 @@ const dataBR = d => d ? d.split("-").reverse().join("/") : "—";
 const diasAte = d => Math.ceil((new Date(d) - new Date(HOY)) / 86400000);
 const vigente = a => (!a.inicio || a.inicio <= HOY) && (!a.fim || a.fim >= HOY);
 const somaPagos = a => (a.pagamentos || []).reduce((s, p) => s + Number(p.valor || 0), 0);
+function mesesEntre(ini, fim) {
+  if (!ini || !fim) return 1;
+  var d1 = new Date(ini),
+    d2 = new Date(fim);
+  var dias = (d2 - d1) / 86400000;
+  return Math.max(1, Math.round(dias / 30.44));
+}
+const valorContrato = a => Number(a.valor || 0) * mesesEntre(a.inicio, a.fim);
 const mesCurto = m => new Date(m + "-01T00:00:00").toLocaleDateString("pt-BR", {
   month: "short"
 }).replace(".", "");
@@ -1036,9 +1044,9 @@ function Caixa({
   const fileRef = useRef();
   const mesAtual = HOY.slice(0, 7);
   const recebidoMes = ads.reduce((s, a) => s + (a.pagamentos || []).filter(p => (p.data || "").slice(0, 7) === mesAtual).reduce((x, p) => x + Number(p.valor || 0), 0), 0);
-  const contratado = ads.filter(vigente).reduce((s, a) => s + Number(a.valor || 0), 0);
-  const aReceberMes = Math.max(0, contratado - recebidoMes);
+  const vendidoTotal = ads.reduce((s, a) => s + valorContrato(a), 0);
   const recebidoTotal = ads.reduce((s, a) => s + somaPagos(a), 0);
+  const aReceber = Math.max(0, vendidoTotal - recebidoTotal);
   const meses = [];
   for (let i = 5; i >= 0; i--) {
     const d = new Date();
@@ -1103,35 +1111,16 @@ function Caixa({
     className: "disp",
     style: {
       fontSize: "22px",
-      lineHeight: .9,
-      color: T.coral
-    }
-  }, brl(aReceberMes)), /*#__PURE__*/React.createElement("div", {
-    className: "eyebrow mt-2",
-    style: {
-      color: T.mut,
-      fontSize: "9px",
-      letterSpacing: ".08em"
-    }
-  }, "A receber")), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1 p-4 border-l",
-    style: {
-      borderColor: T.line
-    }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "disp",
-    style: {
-      fontSize: "22px",
       lineHeight: .9
     }
-  }, brl(contratado)), /*#__PURE__*/React.createElement("div", {
+  }, brl(vendidoTotal)), /*#__PURE__*/React.createElement("div", {
     className: "eyebrow mt-2",
     style: {
       color: T.mut,
       fontSize: "9px",
-      letterSpacing: ".08em"
+      letterSpacing: ".07em"
     }
-  }, "Contratado/mês")), /*#__PURE__*/React.createElement("div", {
+  }, "Vendido (contratos)")), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 p-4 border-l",
     style: {
       borderColor: T.line
@@ -1150,7 +1139,26 @@ function Caixa({
       fontSize: "9px",
       letterSpacing: ".08em"
     }
-  }, "Recebido total"))), /*#__PURE__*/React.createElement("div", {
+  }, "Recebido")), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 p-4 border-l",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "disp",
+    style: {
+      fontSize: "22px",
+      lineHeight: .9,
+      color: T.coral
+    }
+  }, brl(aReceber)), /*#__PURE__*/React.createElement("div", {
+    className: "eyebrow mt-2",
+    style: {
+      color: T.mut,
+      fontSize: "9px",
+      letterSpacing: ".08em"
+    }
+  }, "A receber"))), /*#__PURE__*/React.createElement("div", {
     className: "rounded-2xl border p-4",
     style: {
       background: T.panel,
