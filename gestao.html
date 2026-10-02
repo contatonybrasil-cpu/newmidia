@@ -141,7 +141,7 @@ function gerarContrato(a) {
 <h1>Contrato de Cess\u00e3o Onerosa de Espa\u00e7o Publicit\u00e1rio em Painel Eletr\u00f4nico de LED</h1>
 <p>Pelo presente instrumento particular, as partes abaixo qualificadas:</p>
 <p><b>B2B.ECOM LTDA</b>, sociedade empres\u00e1ria limitada, enquadrada como microempresa, inscrita no CNPJ n\u00ba 65.449.345/0001-72, registrada na JUCESP sob o NIRE n\u00ba 35269335390, com sede na Avenida 14 de Setembro, n\u00ba 2140, Vila Cl\u00e1udia Gl\u00f3ria, CEP 19015-770, em Presidente Prudente/SP, neste ato representada por seu s\u00f3cio, o Sr. <b>LUCAS HENRIQUE FIRMINO COELHO</b>, brasileiro, inscrito no CPF n\u00ba 415.260.698-30 e portador do RG n\u00ba 48.279.886-SP, residente e domiciliado na Rua Miriam Gonzaga da Santa Cruz, n\u00ba 135, Porto Bello Residen, Presidente Prudente/SP, CEP 19024-412, doravante denominada simplesmente <b>CEDENTE</b>;</p>
-<p><b>${a.cliente.toUpperCase()}</b>, inscrita no CNPJ/CPF n\u00ba ______________________, com sede em ____________________________________________, neste ato representada na forma de seus atos constitutivos por ____________________________ (nome, nacionalidade, estado civil, cargo, CPF e RG), doravante denominada simplesmente <b>CESSION\u00c1RIA</b>;</p>
+<p><b>${a.cliente.toUpperCase()}</b>, inscrita no CNPJ/CPF n\u00ba ${a.doc || "______________________"}, com sede em ${a.endereco || "____________________________________________"}, neste ato representada na forma de seus atos constitutivos por ${a.representante || "____________________________ (nome, nacionalidade, estado civil, cargo, CPF e RG)"}, doravante denominada simplesmente <b>CESSION\u00c1RIA</b>;</p>
 <p>e, em conjunto, denominadas <b>PARTES</b>, t\u00eam entre si justo e contratado o presente Contrato de Cess\u00e3o Onerosa de Espa\u00e7o Publicit\u00e1rio em Painel Eletr\u00f4nico de LED, que se reger\u00e1 pelas cl\u00e1usulas e condi\u00e7\u00f5es a seguir, livremente negociadas, e, no que n\u00e3o dispuserem, pelas normas do C\u00f3digo Civil aplic\u00e1veis aos contratos em geral.</p>
 
 <h2>Cl\u00e1usula Primeira \u2013 Das Considera\u00e7\u00f5es Preliminares</h2>
@@ -234,7 +234,7 @@ ${parcelas}
 
 <div class="sign">
 <div class="ln"><span>B2B.ECOM LTDA \u2013 CEDENTE<br>Lucas Henrique Firmino Coelho \u2013 S\u00f3cio</span></div>
-<div class="ln"><span>${a.cliente.toUpperCase()} \u2013 CESSION\u00c1RIA<br>Representante: __________________________</span></div>
+<div class="ln"><span>${a.cliente.toUpperCase()} \u2013 CESSION\u00c1RIA<br>Representante: ${a.representante || "__________________________"}</span></div>
 <p class="tt"><b>TESTEMUNHAS:</b></p>
 <div class="ln"><span>1. Nome: ______________________ CPF: ____________</span></div>
 <div class="ln"><span>2. Nome: ______________________ CPF: ____________</span></div>
@@ -2064,6 +2064,9 @@ function Editor({
     forma: "Pix",
     diaVenc: "",
     telefone: "",
+    doc: "",
+    endereco: "",
+    representante: "",
     ...inicial
   });
   const set = (k, v) => setF(s => ({
@@ -2257,6 +2260,40 @@ function Editor({
     onChange: e => set("telefone", e.target.value),
     placeholder: "(18) 99999-0000",
     className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "rounded-xl border p-3 flex flex-col gap-3",
+    style: {
+      borderColor: T.line
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "eyebrow",
+    style: {
+      color: T.mut
+    }
+  }, "Dados para o contrato (opcional)"), /*#__PURE__*/React.createElement(Campo, {
+    label: "CNPJ / CPF do cliente"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.doc,
+    onChange: e => set("doc", e.target.value),
+    placeholder: "00.000.000/0001-00",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none font-mono",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Endereço / sede do cliente"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.endereco,
+    onChange: e => set("endereco", e.target.value),
+    placeholder: "Rua, nº, bairro, cidade/UF",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
+    style: inp
+  })), /*#__PURE__*/React.createElement(Campo, {
+    label: "Representante (quem assina)"
+  }, /*#__PURE__*/React.createElement("input", {
+    value: f.representante,
+    onChange: e => set("representante", e.target.value),
+    placeholder: "Nome do responsável",
+    className: "w-full rounded-xl border px-3 py-2.5 text-sm outline-none",
     style: inp
   }))), /*#__PURE__*/React.createElement("button", {
     onClick: () => set("exclusivo", !f.exclusivo),
