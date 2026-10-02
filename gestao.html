@@ -1,9 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gestão New Mídia</title>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Gestão New Mídia</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -15,10 +11,8 @@ html,body{background:#0B0E14}
 body,.font-sans{font-family:'Archivo',system-ui,sans-serif !important}
 .font-mono{font-family:'Space Mono',ui-monospace,monospace !important}
 .disp{font-family:'Anton','Arial Narrow',sans-serif;font-weight:400;letter-spacing:.01em}
-.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase}</style>
-</head>
-<body>
-<div id="root"></div>
+.eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase}</style></head>
+<body><div id="root"></div>
 <script>window.addEventListener("error",function(ev){var r=document.getElementById("root");if(r&&!r.hasChildNodes())r.innerHTML='<pre style="color:#ff7a59;background:#0B0E14;padding:20px;white-space:pre-wrap;font-family:monospace">Erro: '+(ev.message||ev.error)+'</pre>';});</script>
 <script>
 const {
@@ -83,9 +77,8 @@ function mesesEntre(ini, fim) {
 }
 const valorContrato = a => Number(a.valor || 0) * mesesEntre(a.inicio, a.fim);
 const CONTRATADA = {
-  nome: "B2B.ecom Ltda",
-  cnpj: "65.449.345/0001-72",
-  cidade: "Presidente Prudente/SP"
+  nome: "B2B.ECOM LTDA",
+  cnpj: "65.449.345/0001-72"
 };
 function gerarContrato(a) {
   var w = window.open("", "_blank");
@@ -94,18 +87,159 @@ function gerarContrato(a) {
     return;
   }
   var meses = mesesEntre(a.inicio, a.fim);
-  var cob = a.cobranca === "avista" ? "\u00e0 vista pelo per\u00edodo total (" + meses + " meses)" : "mensal, com vencimento no dia " + (a.diaVenc || "__") + " de cada m\u00eas";
   var total = valorContrato(a);
   var hoje = new Date().toLocaleDateString("pt-BR", {
     day: "2-digit",
     month: "long",
     year: "numeric"
   });
-  var excl = a.exclusivo ? '<p><b>6. EXCLUSIVIDADE DE SEGMENTO.</b> Durante a vig\u00eancia deste contrato, a NEW M\u00cdDIA compromete-se a n\u00e3o veicular no painel an\u00fancio de concorrente direto do ANUNCIANTE no segmento de <b>' + (a.segmento || "\u2014") + '</b>.</p>' : '';
-  var n7 = a.exclusivo ? '7' : '6',
-    n8 = a.exclusivo ? '8' : '7';
-  var css = "@media print{.noprint{display:none}} body{font-family:Georgia,serif;max-width:720px;margin:0 auto;padding:40px;color:#111;line-height:1.6;font-size:14px} h1{font-size:18px;text-align:center;margin-bottom:26px} h1 span{display:block;font-size:11px;font-weight:normal;color:#555;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px} p{margin:0 0 12px} .parte{margin-bottom:10px} .sign{margin-top:64px;display:flex;justify-content:space-between;gap:40px;text-align:center} .sign div{flex:1;border-top:1px solid #111;padding-top:8px;font-size:12px} .bar{position:sticky;top:0;background:#0B0E14;padding:12px;text-align:center;margin:-40px -40px 30px} .bar button{background:#4FD1C5;color:#04211E;border:none;padding:10px 22px;border-radius:8px;font-weight:bold;cursor:pointer;font-family:sans-serif;font-size:14px}";
-  var html = "<!DOCTYPE html><html lang=\"pt-BR\"><head><meta charset=\"UTF-8\"><title>Contrato - " + a.cliente + "</title><style>" + css + "</style></head><body>" + "<div class=\"bar noprint\"><button onclick=\"window.print()\">Imprimir / Salvar PDF</button></div>" + "<h1><span>New M\u00eddia \u00b7 Painel de LED \u00b7 Presidente Prudente</span>Contrato de Veicula\u00e7\u00e3o de Publicidade em Painel de LED</h1>" + "<p class=\"parte\"><b>CONTRATADA:</b> " + CONTRATADA.nome + ", inscrita no CNPJ n\u00ba " + CONTRATADA.cnpj + ", com sede em " + CONTRATADA.cidade + ", doravante denominada <b>NEW M\u00cdDIA</b>.</p>" + "<p class=\"parte\"><b>CONTRATANTE:</b> " + a.cliente + ", inscrito(a) no CPF/CNPJ n\u00ba ________________" + (a.telefone ? ", telefone " + a.telefone : "") + ", doravante denominado(a) <b>ANUNCIANTE</b>.</p>" + "<p>As partes celebram o presente contrato, que se reger\u00e1 pelas cl\u00e1usulas a seguir:</p>" + "<p><b>1. OBJETO.</b> A NEW M\u00cdDIA veicular\u00e1 o an\u00fancio \u201c<b>" + a.titulo + "</b>\u201d do ANUNCIANTE em seu painel de LED digital localizado na Av. Quatorze de Setembro, Presidente Prudente/SP, mediante 1 (uma) cota de exibi\u00e7\u00e3o.</p>" + "<p><b>2. VEICULA\u00c7\u00c3O.</b> Dura\u00e7\u00e3o de <b>" + a.duracao + " segundos</b> por exibi\u00e7\u00e3o, em loop rotativo com as demais cotas; painel em funcionamento das 07h \u00e0s 23h30, 6 (seis) dias por semana; material em v\u00eddeo vertical fornecido pelo ANUNCIANTE. A troca de arte durante a vig\u00eancia \u00e9 feita sem custo adicional.</p>" + "<p><b>3. PRAZO.</b> De <b>" + dataBR(a.inicio) + "</b> a <b>" + dataBR(a.fim) + "</b> (" + meses + " meses).</p>" + "<p><b>4. VALOR E PAGAMENTO.</b> Valor de <b>" + brl(a.valor) + "</b> (" + cob + "), totalizando <b>" + brl(total) + "</b> no per\u00edodo. Forma de pagamento: <b>" + a.forma + "</b>. A veicula\u00e7\u00e3o inicia-se ap\u00f3s a confirma\u00e7\u00e3o do pagamento.</p>" + "<p><b>5. OBRIGA\u00c7\u00d5ES.</b> O ANUNCIANTE \u00e9 respons\u00e1vel pelo conte\u00fado e pela veracidade do material, respondendo por direitos de terceiros e pela legalidade do que for exibido. A NEW M\u00cdDIA poder\u00e1 recusar material ilegal, ofensivo ou incompat\u00edvel. A produ\u00e7\u00e3o do v\u00eddeo \u00e9 de responsabilidade do ANUNCIANTE, podendo ser contratada \u00e0 parte.</p>" + excl + "<p><b>" + n7 + ". RESCIS\u00c3O.</b> O atraso de pagamento superior a 10 (dez) dias ou o descumprimento de qualquer cl\u00e1usula faculta \u00e0 parte prejudicada rescindir o contrato. Valores pagos referentes a per\u00edodos n\u00e3o veiculados por culpa do ANUNCIANTE n\u00e3o ser\u00e3o restitu\u00eddos.</p>" + "<p><b>" + n8 + ". FORO.</b> Fica eleito o foro da comarca de Presidente Prudente/SP.</p>" + "<p style=\"margin-top:30px\">Presidente Prudente, " + hoje + ".</p>" + "<div class=\"sign\"><div>NEW M\u00cdDIA (Contratada)</div><div>" + a.cliente + " (Anunciante)</div></div>" + "</body></html>";
+  var seg = a.segmento || "__________";
+  var EXT = {
+    1: "um",
+    2: "dois",
+    3: "três",
+    4: "quatro",
+    5: "cinco",
+    6: "seis",
+    7: "sete",
+    8: "oito",
+    9: "nove",
+    10: "dez",
+    11: "onze",
+    12: "doze",
+    18: "dezoito",
+    24: "vinte e quatro"
+  };
+  var mExt = EXT[meses] || String(meses);
+  function fd(d) {
+    return String(d.getDate()).padStart(2, "0") + "/" + String(d.getMonth() + 1).padStart(2, "0") + "/" + d.getFullYear();
+  }
+  var pi = (a.inicio || "2026-01-01").split("-").map(Number);
+  var ini = new Date(pi[0], pi[1] - 1, pi[2]);
+  var diaV = Number(a.diaVenc) || 10;
+  var primeira = new Date(pi[0], pi[1] - 1, diaV);
+  if (primeira < ini) primeira = new Date(pi[0], pi[1], diaV);
+  var ultima = primeira,
+    parcelas = "";
+  if (a.cobranca !== "avista") {
+    var tr = "";
+    for (var i = 0; i < meses; i++) {
+      var dv = new Date(primeira.getFullYear(), primeira.getMonth() + i, primeira.getDate());
+      ultima = dv;
+      tr += "<tr><td>" + (i + 1) + "/" + meses + "</td><td>" + fd(dv) + "</td><td>" + brl(a.valor) + "</td></tr>";
+    }
+    parcelas = "<p>6.2. O valor total será pago em " + meses + " (" + mExt + ") parcelas mensais, iguais e sucessivas de <b>" + brl(a.valor) + "</b> cada, vencendo-se a primeira em <b>" + fd(primeira) + "</b> e a última em <b>" + fd(ultima) + "</b>, conforme o cronograma abaixo:</p><table class=\"pt\"><thead><tr><th>Parcela</th><th>Vencimento</th><th>Valor</th></tr></thead><tbody>" + tr + "<tr class=\"tot\"><td>TOTAL</td><td>\u2014</td><td>" + brl(total) + "</td></tr></tbody></table>";
+  } else {
+    parcelas = "<p>6.2. O valor total e global será pago em parcela \u00fanica de <b>" + brl(total) + "</b>, com vencimento em <b>" + fd(primeira) + "</b>.</p>";
+  }
+  var cl21 = a.exclusivo ? "a cess\u00e3o onerosa, tempor\u00e1ria e exclusiva no segmento de " + seg + ", nos termos do item 2.4," : "a cess\u00e3o onerosa e tempor\u00e1ria,";
+  var cl24 = a.exclusivo ? "2.4. Durante todo o prazo de vig\u00eancia de " + meses + " meses previsto no item 5.1, a CESSION\u00c1RIA ter\u00e1 exclusividade de veicula\u00e7\u00e3o no PAINEL no segmento de <b>" + seg + "</b>. Nesse per\u00edodo, a CEDENTE n\u00e3o poder\u00e1 veicular publicidade de concorrentes diretos da CESSION\u00c1RIA no mesmo segmento, diretamente ou por interm\u00e9dio de terceiros. O PAINEL poder\u00e1 exibir, em sistema de rod\u00edzio (\u201cloop\u201d), conte\u00fados da pr\u00f3pria CEDENTE e de anunciantes de outros segmentos, desde que respeitada essa exclusividade e mantidas a dura\u00e7\u00e3o e a frequ\u00eancia m\u00ednimas das inser\u00e7\u00f5es contratadas pela CESSION\u00c1RIA." : "2.4. A presente cess\u00e3o <b>n\u00e3o contempla exclusividade de segmento</b>, podendo a CEDENTE veicular no PAINEL, em sistema de rod\u00edzio (\u201cloop\u201d), an\u00fancios de quaisquer anunciantes, inclusive do mesmo segmento da CESSION\u00c1RIA, mantidas a dura\u00e7\u00e3o e a frequ\u00eancia m\u00ednimas das inser\u00e7\u00f5es contratadas.";
+  var css = "*{box-sizing:border-box} body{font-family:'Archivo',Arial,sans-serif;max-width:820px;margin:0 auto;padding:0 56px 60px;color:#1a1a1a;line-height:1.55;font-size:12.5px;text-align:justify} .bar{position:sticky;top:0;background:#0B0E14;padding:12px;text-align:center;margin:0 -56px 24px} .bar button{background:#4FD1C5;color:#04211E;border:none;padding:10px 22px;border-radius:8px;font-weight:700;cursor:pointer;font-family:Archivo,sans-serif;font-size:14px} .wm{font-family:'Anton',sans-serif;font-size:22px;letter-spacing:.02em;text-align:center;margin-top:28px} .wm b{color:#0F7A6E;font-weight:400} h1{font-size:14px;font-weight:800;text-align:center;text-transform:uppercase;margin:10px 0 22px;line-height:1.35} h2{font-size:12.5px;font-weight:800;text-transform:uppercase;margin:20px 0 8px} p{margin:0 0 9px} .ind{margin-left:22px} table.pt{width:100%;border-collapse:collapse;margin:10px 0;font-size:11px} table.pt th,table.pt td{border:1px solid #999;padding:5px 7px;text-align:center} table.pt .tot{font-weight:700} .sign{margin-top:48px;page-break-inside:avoid} .ln{margin-top:44px;text-align:center} .ln span{border-top:1px solid #1a1a1a;display:inline-block;padding-top:6px;min-width:62%} .tt{margin-top:36px} @media print{.bar{display:none}}";
+  var html = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>Contrato - ${a.cliente}</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>${css}</style></head><body>
+<div class="bar"><button onclick="window.print()">Imprimir / Salvar PDF</button></div>
+<div class="wm">NEW<b>·</b>M\u00cdDIA</div>
+<h1>Contrato de Cess\u00e3o Onerosa de Espa\u00e7o Publicit\u00e1rio em Painel Eletr\u00f4nico de LED</h1>
+<p>Pelo presente instrumento particular, as partes abaixo qualificadas:</p>
+<p><b>B2B.ECOM LTDA</b>, sociedade empres\u00e1ria limitada, enquadrada como microempresa, inscrita no CNPJ n\u00ba 65.449.345/0001-72, registrada na JUCESP sob o NIRE n\u00ba 35269335390, com sede na Avenida 14 de Setembro, n\u00ba 2140, Vila Cl\u00e1udia Gl\u00f3ria, CEP 19015-770, em Presidente Prudente/SP, neste ato representada por seu s\u00f3cio, o Sr. <b>LUCAS HENRIQUE FIRMINO COELHO</b>, brasileiro, inscrito no CPF n\u00ba 415.260.698-30 e portador do RG n\u00ba 48.279.886-SP, residente e domiciliado na Rua Miriam Gonzaga da Santa Cruz, n\u00ba 135, Porto Bello Residen, Presidente Prudente/SP, CEP 19024-412, doravante denominada simplesmente <b>CEDENTE</b>;</p>
+<p><b>${a.cliente.toUpperCase()}</b>, inscrita no CNPJ/CPF n\u00ba ______________________, com sede em ____________________________________________, neste ato representada na forma de seus atos constitutivos por ____________________________ (nome, nacionalidade, estado civil, cargo, CPF e RG), doravante denominada simplesmente <b>CESSION\u00c1RIA</b>;</p>
+<p>e, em conjunto, denominadas <b>PARTES</b>, t\u00eam entre si justo e contratado o presente Contrato de Cess\u00e3o Onerosa de Espa\u00e7o Publicit\u00e1rio em Painel Eletr\u00f4nico de LED, que se reger\u00e1 pelas cl\u00e1usulas e condi\u00e7\u00f5es a seguir, livremente negociadas, e, no que n\u00e3o dispuserem, pelas normas do C\u00f3digo Civil aplic\u00e1veis aos contratos em geral.</p>
+
+<h2>Cl\u00e1usula Primeira \u2013 Das Considera\u00e7\u00f5es Preliminares</h2>
+<p>1.1. As PARTES declaram, como premissas que integram este Contrato e orientam a sua interpreta\u00e7\u00e3o, nos termos do art. 113, \u00a7 2\u00ba, do C\u00f3digo Civil, que:</p>
+<p class="ind">a) a CEDENTE \u00e9 leg\u00edtima propriet\u00e1ria e possuidora de painel eletr\u00f4nico de LED (\u201cPAINEL\u201d) instalado em seu estabelecimento, situado na Av. Quatorze de Setembro, n\u00ba 2140, Vila Cl\u00e1udia Gl\u00f3ria, Presidente Prudente/SP, destinado \u00e0 exibi\u00e7\u00e3o de conte\u00fado publicit\u00e1rio pr\u00f3prio e de terceiros;</p>
+<p class="ind">b) a CESSION\u00c1RIA tem interesse em divulgar sua marca, seus produtos e servi\u00e7os por meio do PAINEL, pelo per\u00edodo e nas condi\u00e7\u00f5es aqui estabelecidos;</p>
+<p class="ind">c) o presente Contrato decorre de negocia\u00e7\u00e3o pr\u00e9via entre as PARTES, iniciada por proposta comercial da CEDENTE, cujos termos foram integralmente incorporados a este instrumento, tendo a CESSION\u00c1RIA recebido a minuta com anteced\u00eancia, com oportunidade de analis\u00e1-la e de propor altera\u00e7\u00f5es, raz\u00e3o pela qual este Contrato n\u00e3o constitui contrato de ades\u00e3o;</p>
+<p class="ind">d) ambas as PARTES contratam no exerc\u00edcio regular de suas atividades institucionais e econ\u00f4micas, em condi\u00e7\u00f5es de paridade e simetria, sem qualquer rela\u00e7\u00e3o de hipossufici\u00eancia ou vulnerabilidade t\u00e9cnica, jur\u00eddica, informacional ou econ\u00f4mica de uma em rela\u00e7\u00e3o \u00e0 outra;</p>
+<p class="ind">e) o pre\u00e7o, o prazo, as multas e a aloca\u00e7\u00e3o de riscos aqui previstos foram estabelecidos de forma interdependente, de modo que cada cl\u00e1usula constitui contrapartida das demais e reflete a base econ\u00f4mica do neg\u00f3cio.</p>
+
+<h2>Cl\u00e1usula Segunda \u2013 Do Objeto e da Natureza Jur\u00eddica</h2>
+<p>2.1. Constitui objeto do presente Contrato ${cl21} pela CEDENTE \u00e0 CESSION\u00c1RIA, de espa\u00e7o e tempo de exibi\u00e7\u00e3o no PAINEL, para veicula\u00e7\u00e3o de pe\u00e7as publicit\u00e1rias de titularidade e responsabilidade da CESSION\u00c1RIA, nas especifica\u00e7\u00f5es t\u00e9cnicas descritas na Cl\u00e1usula Terceira.</p>
+<p>2.2. O presente Contrato possui natureza empresarial e at\u00edpica, nos termos do art. 425 do C\u00f3digo Civil, consistindo em cess\u00e3o de espa\u00e7o de m\u00eddia, e <b>n\u00e3o</b> configura loca\u00e7\u00e3o de im\u00f3vel, de parede, de fachada ou de qualquer bem im\u00f3vel, raz\u00e3o pela qual n\u00e3o se sujeita \u00e0 Lei n\u00ba 8.245/1991, nem confere \u00e0 CESSION\u00c1RIA qualquer direito de posse, uso, acesso f\u00edsico ou prefer\u00eancia em rela\u00e7\u00e3o ao PAINEL ou ao im\u00f3vel em que est\u00e1 instalado.</p>
+<p>2.3. A CESSION\u00c1RIA contrata o espa\u00e7o publicit\u00e1rio como insumo de sua pr\u00f3pria atividade de divulga\u00e7\u00e3o, n\u00e3o figurando como destinat\u00e1ria final f\u00e1tica e econ\u00f4mica do servi\u00e7o, reconhecendo as PARTES a inaplicabilidade do C\u00f3digo de Defesa do Consumidor \u00e0 presente rela\u00e7\u00e3o.</p>
+<p>${cl24}</p>
+<p>2.5. O PAINEL, seus componentes, softwares e o sistema de gest\u00e3o de conte\u00fado permanecem sob a propriedade, a posse e a administra\u00e7\u00e3o exclusivas da CEDENTE, que definir\u00e1 livremente a sua opera\u00e7\u00e3o, observadas as especifica\u00e7\u00f5es m\u00ednimas deste Contrato.</p>
+
+<h2>Cl\u00e1usula Terceira \u2013 Das Especifica\u00e7\u00f5es da Veicula\u00e7\u00e3o</h2>
+<p>3.1. A veicula\u00e7\u00e3o observar\u00e1 as seguintes especifica\u00e7\u00f5es t\u00e9cnicas m\u00ednimas:</p>
+<p class="ind">a) dura\u00e7\u00e3o de cada inser\u00e7\u00e3o: <b>${a.duracao} (${a.duracao == 15 ? "quinze" : a.duracao == 10 ? "dez" : "cinco"}) segundos</b>;</p>
+<p class="ind">b) frequ\u00eancia: no m\u00ednimo 1 (uma) inser\u00e7\u00e3o a cada ciclo de exibi\u00e7\u00e3o, com ciclo de at\u00e9 3 (tr\u00eas) minutos;</p>
+<p class="ind">c) hor\u00e1rio de funcionamento do PAINEL: diariamente, das 07h00 \u00e0s 23h00;</p>
+<p class="ind">d) formato dos arquivos: v\u00eddeo MP4 ou imagem JPG/PNG, na resolu\u00e7\u00e3o e propor\u00e7\u00e3o nativas do PAINEL, informadas por escrito pela CEDENTE, sem \u00e1udio.</p>
+<p>3.2. A CEDENTE poder\u00e1 alterar a ordem das inser\u00e7\u00f5es no ciclo de exibi\u00e7\u00e3o, desde que mantidas a dura\u00e7\u00e3o e a frequ\u00eancia m\u00ednimas previstas no item 3.1.</p>
+<p>3.3. As PARTES reconhecem que interrup\u00e7\u00f5es pontuais do PAINEL decorrentes de manuten\u00e7\u00e3o preventiva ou corretiva, oscila\u00e7\u00e3o ou falta de energia el\u00e9trica e atualiza\u00e7\u00e3o de sistema s\u00e3o inerentes \u00e0 natureza do servi\u00e7o e n\u00e3o caracterizam inadimplemento, desde que n\u00e3o ultrapassem, somadas, 72 (setenta e duas) horas em cada m\u00eas de veicula\u00e7\u00e3o.</p>
+<p>3.4. Ultrapassado o limite do item 3.3, a CEDENTE compensar\u00e1 o tempo excedente de inatividade mediante a reposi\u00e7\u00e3o das inser\u00e7\u00f5es n\u00e3o exibidas, no curso da vig\u00eancia ou em at\u00e9 30 (trinta) dias ap\u00f3s o seu t\u00e9rmino, o que constituir\u00e1 a \u00fanica forma de compensa\u00e7\u00e3o devida por interrup\u00e7\u00f5es t\u00e9cnicas, ressalvado o disposto na Cl\u00e1usula D\u00e9cima Terceira.</p>
+<p>3.5. A CEDENTE n\u00e3o garante \u00edndices de audi\u00eancia, fluxo de pessoas ou ve\u00edculos, alcance, visualiza\u00e7\u00f5es, retorno comercial ou capta\u00e7\u00e3o de clientes, assumindo a obriga\u00e7\u00e3o de exibir as pe\u00e7as conforme as especifica\u00e7\u00f5es deste Contrato. O resultado econ\u00f4mico da campanha constitui risco pr\u00f3prio da atividade da CESSION\u00c1RIA.</p>
+
+<h2>Cl\u00e1usula Quarta \u2013 Da Comprova\u00e7\u00e3o da Veicula\u00e7\u00e3o</h2>
+<p>4.1. At\u00e9 o 5\u00ba (quinto) dia \u00fatil de cada m\u00eas, a CEDENTE encaminhar\u00e1 \u00e0 CESSION\u00c1RIA relat\u00f3rio de veicula\u00e7\u00e3o referente ao m\u00eas anterior, contendo registro fotogr\u00e1fico ou em v\u00eddeo, com data e hora, das pe\u00e7as em exibi\u00e7\u00e3o no PAINEL.</p>
+<p>4.2. A CESSION\u00c1RIA ter\u00e1 o prazo de 5 (cinco) dias \u00fateis, contados do recebimento do relat\u00f3rio, para apresentar, por escrito e de forma fundamentada, eventual impugna\u00e7\u00e3o quanto \u00e0 veicula\u00e7\u00e3o. Decorrido esse prazo sem impugna\u00e7\u00e3o, o relat\u00f3rio ser\u00e1 considerado aprovado.</p>
+<p>4.3. Eventual reclama\u00e7\u00e3o sobre falha na exibi\u00e7\u00e3o dever\u00e1 ser comunicada pela CESSION\u00c1RIA \u00e0 CEDENTE, por escrito, em at\u00e9 5 (cinco) dias \u00fateis da ocorr\u00eancia ou do recebimento do relat\u00f3rio que a abranger, o que ocorrer por \u00faltimo, sob pena de decad\u00eancia do direito de reclamar, sem preju\u00edzo da reposi\u00e7\u00e3o prevista no item 3.4.</p>
+<p>4.4. A impugna\u00e7\u00e3o parcial n\u00e3o autoriza a reten\u00e7\u00e3o do valor da parcela, que dever\u00e1 ser paga integralmente no vencimento, resolvendo-se eventual diverg\u00eancia procedente pela reposi\u00e7\u00e3o das inser\u00e7\u00f5es, na forma do item 3.4.</p>
+
+<h2>Cl\u00e1usula Quinta \u2013 Do Prazo de Vig\u00eancia</h2>
+<p>5.1. O presente Contrato vigorar\u00e1 pelo prazo determinado de <b>${meses}</b> meses, com in\u00edcio em <b>${dataBR(a.inicio)}</b> e t\u00e9rmino em <b>${dataBR(a.fim)}</b>.</p>
+<p>5.2. Findo o prazo previsto no item 5.1, o Contrato extinguir-se-\u00e1 de pleno direito, independentemente de notifica\u00e7\u00e3o, aviso ou interpela\u00e7\u00e3o judicial ou extrajudicial.</p>
+<p>5.3. A renova\u00e7\u00e3o ou prorroga\u00e7\u00e3o do presente Contrato depender\u00e1 exclusivamente de termo aditivo escrito e assinado pelas PARTES. A eventual continuidade da exibi\u00e7\u00e3o ap\u00f3s o termo final, por mera toler\u00e2ncia da CEDENTE, n\u00e3o implicar\u00e1 renova\u00e7\u00e3o t\u00e1cita, sendo devida remunera\u00e7\u00e3o pelo per\u00edodo excedente, calculada pro rata die com base no valor da parcela mensal.</p>
+
+<h2>Cl\u00e1usula Sexta \u2013 Do Pre\u00e7o e da Forma de Pagamento</h2>
+<p>6.1. Pela cess\u00e3o do espa\u00e7o publicit\u00e1rio durante todo o per\u00edodo de vig\u00eancia, a CESSION\u00c1RIA pagar\u00e1 \u00e0 CEDENTE o valor total e global de <b>${brl(total)}</b>.</p>
+${parcelas}
+<p>6.3. O pagamento ser\u00e1 efetuado mediante ${a.forma}, para conta ou chave de titularidade exclusiva da CEDENTE, a ser informada por escrito. N\u00e3o ter\u00e1 efeito liberat\u00f3rio qualquer pagamento realizado a terceiros ou em conta de titularidade diversa.</p>
+<p>6.4. O pre\u00e7o \u00e9 fixo e irreajust\u00e1vel durante o prazo de vig\u00eancia e remunera integralmente a cess\u00e3o do espa\u00e7o, nele estando inclu\u00eddos todos os tributos de responsabilidade da CEDENTE.</p>
+<p>6.5. O parcelamento eventualmente previsto constitui mera facilidade de pagamento, n\u00e3o havendo correspond\u00eancia entre cada parcela e um per\u00edodo espec\u00edfico de exibi\u00e7\u00e3o, sendo o pre\u00e7o devido pela totalidade do prazo contratado, ressalvadas as hip\u00f3teses de extin\u00e7\u00e3o antecipada previstas neste Contrato.</p>
+
+<h2>Cl\u00e1usula S\u00e9tima \u2013 Do Inadimplemento e dos Encargos Morat\u00f3rios</h2>
+<p>7.1. O n\u00e3o pagamento de qualquer parcela na data de vencimento constituir\u00e1 a CESSION\u00c1RIA em mora de pleno direito, nos termos do art. 397 do C\u00f3digo Civil, sujeitando o valor em atraso a: a) multa morat\u00f3ria de 10% (dez por cento); b) juros morat\u00f3rios de 1% (um por cento) ao m\u00eas, pro rata die; e c) corre\u00e7\u00e3o monet\u00e1ria pela varia\u00e7\u00e3o do IPCA/IBGE, desde o vencimento at\u00e9 o efetivo pagamento.</p>
+<p>7.2. Havendo atraso superior a 10 (dez) dias em qualquer parcela, a CEDENTE poder\u00e1, mediante simples comunica\u00e7\u00e3o escrita, suspender a veicula\u00e7\u00e3o das pe\u00e7as da CESSION\u00c1RIA at\u00e9 a integral purga\u00e7\u00e3o da mora, nos termos do art. 476 do C\u00f3digo Civil, sem que a suspens\u00e3o importe prorroga\u00e7\u00e3o do prazo contratual, desconto ou abatimento das parcelas vincendas.</p>
+<p>7.3. Caso a CEDENTE necessite recorrer a medidas judiciais ou extrajudiciais para a cobran\u00e7a, a CESSION\u00c1RIA arcar\u00e1, al\u00e9m dos encargos do item 7.1, com honor\u00e1rios advocat\u00edcios contratuais de 10% (dez por cento) sobre o valor do d\u00e9bito, sem preju\u00edzo dos honor\u00e1rios de sucumb\u00eancia.</p>
+
+<h2>Cl\u00e1usula Oitava \u2013 Das Obriga\u00e7\u00f5es da Cedente</h2>
+<p>8.1. S\u00e3o obriga\u00e7\u00f5es da CEDENTE: a) exibir as pe\u00e7as conforme a Cl\u00e1usula Terceira; b) manter o PAINEL em condi\u00e7\u00f5es regulares de funcionamento; c) manter o PAINEL regular perante os \u00f3rg\u00e3os p\u00fablicos quanto \u00e0 instala\u00e7\u00e3o e estrutura; d) encaminhar os relat\u00f3rios de veicula\u00e7\u00e3o na forma da Cl\u00e1usula Quarta; e) inserir as pe\u00e7as recebidas em at\u00e9 3 (tr\u00eas) dias \u00fateis do recebimento do arquivo em conformidade com as especifica\u00e7\u00f5es.</p>
+
+<h2>Cl\u00e1usula Nona \u2013 Das Obriga\u00e7\u00f5es da Cession\u00e1ria</h2>
+<p>9.1. S\u00e3o obriga\u00e7\u00f5es da CESSION\u00c1RIA: a) efetuar pontualmente os pagamentos na forma da Cl\u00e1usula Sexta; b) fornecer as pe\u00e7as prontas, em arquivo digital compat\u00edvel com a Cl\u00e1usula Terceira, com anteced\u00eancia m\u00ednima de 3 (tr\u00eas) dias \u00fateis da data pretendida para exibi\u00e7\u00e3o; c) responsabilizar-se integral e exclusivamente pela cria\u00e7\u00e3o, produ\u00e7\u00e3o e conte\u00fado das pe\u00e7as; d) n\u00e3o ceder, sublocar ou comercializar a terceiros o espa\u00e7o objeto deste Contrato, salvo autoriza\u00e7\u00e3o pr\u00e9via e escrita da CEDENTE.</p>
+<p>9.2. A CESSION\u00c1RIA poder\u00e1 substituir as pe\u00e7as em veicula\u00e7\u00e3o at\u00e9 1 (uma) vez por m\u00eas, sem custo adicional. Substitui\u00e7\u00f5es adicionais depender\u00e3o de concord\u00e2ncia da CEDENTE.</p>
+<p>9.3. O atraso ou a omiss\u00e3o da CESSION\u00c1RIA no fornecimento das pe\u00e7as n\u00e3o suspende o prazo de vig\u00eancia nem a exime do pagamento das parcelas, permanecendo o espa\u00e7o \u00e0 sua disposi\u00e7\u00e3o.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima \u2013 Da Responsabilidade pelo Conte\u00fado</h2>
+<p>10.1. A CESSION\u00c1RIA \u00e9 a \u00fanica e exclusiva respons\u00e1vel, na qualidade de anunciante, pelo conte\u00fado das pe\u00e7as por ela fornecidas, atuando a CEDENTE como mero ve\u00edculo de exibi\u00e7\u00e3o. A CESSION\u00c1RIA declara e garante que tais pe\u00e7as: a) observam a legisla\u00e7\u00e3o vigente e as normas do CONAR; b) n\u00e3o violam direitos autorais, de imagem, de voz ou de marca de terceiros; c) n\u00e3o cont\u00eam dados pessoais de terceiros sem base legal (LGPD \u2013 Lei n\u00ba 13.709/2018); d) s\u00e3o amparadas por dados f\u00e1ticos que d\u00e3o sustenta\u00e7\u00e3o \u00e0 mensagem.</p>
+<p>10.2. A CEDENTE poder\u00e1 recusar ou retirar de exibi\u00e7\u00e3o, mediante comunica\u00e7\u00e3o justificada, pe\u00e7a que: (i) contrarie a lei, a moral ou os bons costumes; (ii) contenha conte\u00fado pol\u00edtico-partid\u00e1rio, discriminat\u00f3rio, violento ou ofensivo; (iii) promova concorrente direto da CEDENTE no segmento de com\u00e9rcio de vestu\u00e1rio; (iv) seja objeto de ordem judicial de retirada; ou (v) esteja em desconformidade com as especifica\u00e7\u00f5es t\u00e9cnicas. A recusa n\u00e3o suspende as obriga\u00e7\u00f5es de pagamento, cabendo \u00e0 CESSION\u00c1RIA substituir a pe\u00e7a em 3 (tr\u00eas) dias \u00fateis.</p>
+<p>10.3. A CESSION\u00c1RIA manter\u00e1 a CEDENTE indene de quaisquer reclama\u00e7\u00f5es, a\u00e7\u00f5es, condena\u00e7\u00f5es, multas e despesas decorrentes do conte\u00fado das pe\u00e7as, obrigando-se a ressarci-la integralmente.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima Primeira \u2013 Da Propriedade Intelectual</h2>
+<p>11.1. A CESSION\u00c1RIA concede \u00e0 CEDENTE, durante a vig\u00eancia deste Contrato, licen\u00e7a gratuita, n\u00e3o exclusiva e intransfer\u00edvel para reproduzir suas marcas, nomes e pe\u00e7as exclusivamente para os fins de exibi\u00e7\u00e3o no PAINEL e de comprova\u00e7\u00e3o da veicula\u00e7\u00e3o.</p>
+<p>11.2. Nenhuma disposi\u00e7\u00e3o deste Contrato transfere direitos de propriedade intelectual de uma PARTE \u00e0 outra. A divulga\u00e7\u00e3o do nome da CESSION\u00c1RIA como cliente da CEDENTE depender\u00e1 de autoriza\u00e7\u00e3o pr\u00e9via e escrita.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima Segunda \u2013 Da Extin\u00e7\u00e3o Antecipada</h2>
+<p>12.1. <b>Resili\u00e7\u00e3o pela CESSION\u00c1RIA.</b> A resili\u00e7\u00e3o unilateral imotivada pela CESSION\u00c1RIA antes do termo final, mediante notifica\u00e7\u00e3o escrita com anteced\u00eancia m\u00ednima de 30 (trinta) dias, sujeit\u00e1-la-\u00e1 ao pagamento: (i) das parcelas vencidas e n\u00e3o pagas, com os encargos da Cl\u00e1usula S\u00e9tima; (ii) das parcelas proporcionais ao per\u00edodo de exibi\u00e7\u00e3o at\u00e9 o t\u00e9rmino do aviso pr\u00e9vio; e (iii) de multa compensat\u00f3ria equivalente a 30% (trinta por cento) do saldo remanescente do Contrato.</p>
+<p>12.2. <b>Resolu\u00e7\u00e3o por inadimplemento da CESSION\u00c1RIA.</b> O atraso no pagamento por prazo superior a 30 (trinta) dias, ou o descumprimento de outra obriga\u00e7\u00e3o n\u00e3o sanado em 10 (dez) dias da notifica\u00e7\u00e3o, facultar\u00e1 \u00e0 CEDENTE considerar o Contrato resolvido de pleno direito, sujeitando-se a CESSION\u00c1RIA \u00e0s mesmas consequ\u00eancias do item 12.1, dispensado o aviso pr\u00e9vio.</p>
+<p>12.3. <b>Resolu\u00e7\u00e3o por inadimplemento da CEDENTE.</b> O descumprimento, pela CEDENTE, da obriga\u00e7\u00e3o de exibi\u00e7\u00e3o ou da exclusividade (quando prevista), n\u00e3o sanado em 10 (dez) dias da notifica\u00e7\u00e3o, facultar\u00e1 \u00e0 CESSION\u00c1RIA a resolu\u00e7\u00e3o do Contrato, ficando desobrigada das parcelas vincendas, devidas apenas as proporcionais ao per\u00edodo veiculado.</p>
+<p>12.4. <b>Extin\u00e7\u00e3o por fato objetivo.</b> Em caso de encerramento das atividades da CEDENTE no local, desocupa\u00e7\u00e3o ou aliena\u00e7\u00e3o do im\u00f3vel, altera\u00e7\u00e3o de legisla\u00e7\u00e3o de paisagem urbana, determina\u00e7\u00e3o administrativa/judicial que impe\u00e7a a opera\u00e7\u00e3o do PAINEL, ou impossibilidade t\u00e9cnica definitiva, a CEDENTE poder\u00e1 extinguir o Contrato mediante notifica\u00e7\u00e3o com anteced\u00eancia m\u00ednima de 30 (trinta) dias, sem multa ou indeniza\u00e7\u00e3o, devidas pela CESSION\u00c1RIA apenas as parcelas proporcionais ao per\u00edodo veiculado e restitu\u00eddos valores pagos por per\u00edodo n\u00e3o veiculado.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima Terceira \u2013 Do Caso Fortuito e da For\u00e7a Maior</h2>
+<p>13.1. Nenhuma das PARTES responder\u00e1 pelo descumprimento decorrente de caso fortuito ou for\u00e7a maior (art. 393 do C\u00f3digo Civil), tais como eventos clim\u00e1ticos severos, descargas el\u00e9tricas, vandalismo, furto, inc\u00eandio ou interrup\u00e7\u00e3o prolongada de energia.</p>
+<p>13.2. Enquanto perdurar o evento, a veicula\u00e7\u00e3o ficar\u00e1 suspensa e, se a suspens\u00e3o superar 15 (quinze) dias consecutivos, a CEDENTE conceder\u00e1 a reposi\u00e7\u00e3o das inser\u00e7\u00f5es ou o abatimento proporcional do pre\u00e7o. Se a suspens\u00e3o ultrapassar 60 (sessenta) dias consecutivos, qualquer das PARTES poder\u00e1 extinguir o Contrato sem multa.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima Quarta \u2013 Das Disposi\u00e7\u00f5es Gerais</h2>
+<p>14.1. \u00c9 vedado \u00e0 CESSION\u00c1RIA ceder ou transferir os direitos e obriga\u00e7\u00f5es deste Contrato sem a pr\u00e9via anu\u00eancia da CEDENTE. A CEDENTE poder\u00e1 ceder os cr\u00e9ditos oriundos deste Contrato, bastando a notifica\u00e7\u00e3o da CESSION\u00c1RIA.</p>
+<p>14.2. As PARTES tratar\u00e3o os dados pessoais de seus representantes exclusivamente para a execu\u00e7\u00e3o deste Contrato, nos termos da Lei n\u00ba 13.709/2018 (LGPD).</p>
+<p>14.3. Este Contrato n\u00e3o estabelece v\u00ednculo societ\u00e1rio, associativo, de representa\u00e7\u00e3o ou trabalhista entre as PARTES, respondendo cada qual por suas obriga\u00e7\u00f5es trabalhistas, previdenci\u00e1rias e tribut\u00e1rias.</p>
+<p>14.4. As PARTES reconhecem o presente instrumento como t\u00edtulo executivo extrajudicial (art. 784, III, do CPC) e admitem como v\u00e1lida a assinatura por meio eletr\u00f4nico, com ou sem certificado ICP-Brasil, nos termos da Lei n\u00ba 14.063/2020.</p>
+<p>14.5. A toler\u00e2ncia de qualquer das PARTES quanto ao descumprimento de cl\u00e1usula constituir\u00e1 mera liberalidade, n\u00e3o implicando nova\u00e7\u00e3o ou ren\u00fancia. A eventual nulidade de qualquer cl\u00e1usula n\u00e3o afetar\u00e1 a validade das demais.</p>
+
+<h2>Cl\u00e1usula D\u00e9cima Quinta \u2013 Do Foro</h2>
+<p>15.1. Fica eleito o Foro da Comarca de Presidente Prudente/SP para dirimir quaisquer controv\u00e9rsias oriundas deste Contrato, com ren\u00fancia expressa a qualquer outro.</p>
+<p class="tt">E, por estarem assim justas e contratadas, as PARTES assinam o presente instrumento em 2 (duas) vias de igual teor e forma, ou eletronicamente.</p>
+<p class="tt">Presidente Prudente/SP, ${hoje}.</p>
+
+<div class="sign">
+<div class="ln"><span>B2B.ECOM LTDA \u2013 CEDENTE<br>Lucas Henrique Firmino Coelho \u2013 S\u00f3cio</span></div>
+<div class="ln"><span>${a.cliente.toUpperCase()} \u2013 CESSION\u00c1RIA<br>Representante: __________________________</span></div>
+<p class="tt"><b>TESTEMUNHAS:</b></p>
+<div class="ln"><span>1. Nome: ______________________ CPF: ____________</span></div>
+<div class="ln"><span>2. Nome: ______________________ CPF: ____________</span></div>
+</div>
+</body></html>`;
   w.document.write(html);
   w.document.close();
 }
@@ -2178,6 +2312,4 @@ function Editor({
   }, "Novas cotas entram como “pendente no painel” até você publicar no ViPlex."))));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(/*#__PURE__*/React.createElement(App, null));
-</script>
-</body>
-</html>
+</script></body></html>
