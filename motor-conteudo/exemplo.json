@@ -1,0 +1,11 @@
+{
+  "nome": "linho-no-verao",
+  "telas": [
+    {"tipo": "capa", "kicker": "Verão 2027", "titulo": "Linho no calor de Prudente.", "sub": "3 jeitos de usar sem parecer que vai a um casamento."},
+    {"tipo": "texto", "titulo": "Camisa aberta sobre camiseta", "texto": "Camisa de linho por cima de uma camiseta pima lisa. Funciona do almoço ao fim de tarde."},
+    {"tipo": "foto", "descricao_foto": "look camisa linho aberta + camiseta pima, corpo inteiro na loja", "titulo": "Camisa New York Linho", "texto": "100% linho · Camiseta Pima"},
+    {"tipo": "texto", "fundo": "cimento", "titulo": "Calça de linho com tênis branco", "texto": "Cós com elástico, barra reta. Tira o ar formal e segura o dia inteiro."},
+    {"tipo": "texto", "titulo": "Bermuda de linho e polo", "texto": "Para o fim de semana. Polo piquet de cor sólida e chinelo ou tênis de couro."},
+    {"tipo": "cta", "titulo": "Vem provar na New.", "texto": "Camisas, calças e bermudas de linho na loja do Parque do Povo e no site. 10x sem juros."}
+  ]
+}
