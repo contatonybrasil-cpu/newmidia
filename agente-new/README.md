@@ -1,4 +1,4 @@
-# Motor de conteúdo — New York Store
+# Agente New — New York Store
 
 Kit usado pelo agente diário para gerar as artes de carrossel (1080×1350) seguindo o manual de marca v1.
 
